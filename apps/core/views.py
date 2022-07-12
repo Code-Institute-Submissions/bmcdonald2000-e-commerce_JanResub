@@ -12,3 +12,7 @@ def home(request):
 
     return render(request, 'home.html', context)
 
+
+# Contact view
+def contact(request):
+    return render(request, 'contact_us.html')
