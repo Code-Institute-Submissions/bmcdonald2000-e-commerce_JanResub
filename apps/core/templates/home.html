@@ -1,0 +1,32 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+ 
+<!-- Template title -->
+{% block title%} Home {% endblock %}
+ 
+<!-- Template content -->
+{% block content %}
+
+
+<h1 class="title"> Welcome </h1>
+   <!-- Bluma cards  -->
+   <div class="columns is-multiline">
+      
+      <!-- Displays the product details -->
+      {% for product in products %}
+         <!-- Bulma card to display product data -->
+         <div class="columns is-4">
+            <div class="card">
+               <div class="card-content">
+                  <div class="media">
+                     <div class="media-content">
+                        <p class="title is-4">{{ product.title }}</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         {{ product.title }}
+      {% endfor %}
+   </div>
+{% endblock %}
