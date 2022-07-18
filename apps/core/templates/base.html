@@ -27,6 +27,7 @@
             <div class="navbar-brand">
                 <img src="{{ '/static/images/logo.png' }}" alt="logo" width="100" height="70" class="d-inline-block">
                 <!-- Home link-->
+            
                 <a class="navbar-item" href="{% url 'home' %}">
                     <i class="bi bi-house-door-fill d-inline-block align-text-top"></i>
                     Home
@@ -34,9 +35,7 @@
                 
                 <!-- Category links-->
                 {% for category in category_menu %}
-                <a class="navbar-item">
-                    {{ category.title }}
-                </a>
+                    <a class="navbar-item" href="{% url 'category_details' category.slug %}">{{ category.title }}</a>
                 {% endfor %}
 
                 <!-- Contact us page link -->
@@ -45,6 +44,7 @@
                     Contact Us
                 </a>
             </div>
+            
        </nav>
 
        <!-- Bulma section class to seperate content -->
