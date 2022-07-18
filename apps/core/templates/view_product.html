@@ -1,0 +1,21 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+ 
+<!-- Template title -->
+{% block title%} {{product.title}} {% endblock %}
+ 
+<!-- Template content -->
+{% block content %}
+   <!-- displays product title -->
+   <h1 class="title">{{product.title}}</h1>
+   <!-- displays product price -->
+   <p class="subtitle"> £ {{ product.price}}</p>
+
+   <!-- if the product has a description -->
+   {% if product.description }
+   <!-- displays product description -->
+   <p class>{{product.description}}</p>
+
+   
+   
+{% endblock %}
