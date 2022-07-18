@@ -1,0 +1,34 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+ 
+<!-- Template title -->
+{% block title%}  {% endblock %}
+ 
+<!-- Template content -->
+{% block content %}
+
+   <h1 class="title"> {{ category.title }}</h1>
+
+    {% for product in products %}
+        <!-- Bulma card to display product data -->
+        <div class="column is-4">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                    <div class="media-content">
+                        <!-- displays product title -->
+                        <p class="title is-4">{{ product.title }}</p>
+                        <!-- displays product price -->
+                        <p class="subtitle is-6"> £ {{ product.price}}</p>
+                    </div>
+                    </div>
+                </div>
+                <!-- Bulma footer with link to product description -->
+                <footer class="card-footer">
+                    <a href="{% url 'view_product' product.slug %}" class="card-footer-item">View</a>
+                </footer>
+            </div>
+        </div>
+    {% endfor %}
+   
+{% endblock %}
