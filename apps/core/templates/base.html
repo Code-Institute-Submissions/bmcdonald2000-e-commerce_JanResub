@@ -23,18 +23,18 @@
  
        <!-- Bulma navbar -->
        <nav class="navbar is-dark">
+        <!-- Site Logo -->
             <div class="navbar-brand">
                 <img src="{{ '/static/images/logo.png' }}" alt="logo" width="100" height="70" class="d-inline-block">
-            
+                <!-- Home link-->
                 <a class="navbar-item" href="{% url 'home' %}">
                     <i class="bi bi-house-door-fill d-inline-block align-text-top"></i>
-
                     Home
                 </a>
-
+                
+                <!-- Contact us page link -->
                 <a class="navbar-item" href="{% url 'contact' %}">
                     <i class="bi bi-person-lines-fill d-inline-block align-text-top"></i>
-
                     Contact Us
                 </a>
             </div>
