@@ -12,10 +12,9 @@
    <p class="subtitle"> £ {{ product.price}}</p>
 
    <!-- if the product has a description -->
-   {% if product.description }
-   <!-- displays product description -->
-   <p class>{{product.description}}</p>
+   {% if product.description %}
+      <!-- displays product description -->
+      <p class>{{product.description}}</p>
+   {% endif %}
 
-   
-   
 {% endblock %}
