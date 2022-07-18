@@ -28,7 +28,7 @@
                </div>
                <!-- Bulma footer with link to product description -->
                <footer class="card-footer">
-                     <a href="{% url 'view_product' product.slug %}" class="card-footer-item">View</a>
+                     <a href="{% url 'view_product' product.category.slug product.slug %}" class="card-footer-item">View</a>
                </footer>
             </div>
          </div>
