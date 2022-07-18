@@ -11,22 +11,23 @@
 <h1 class="title"> Welcome </h1>
    <!-- Bluma cards  -->
    <div class="columns is-multiline">
-      
       <!-- Displays the product details -->
       {% for product in products %}
          <!-- Bulma card to display product data -->
-         <div class="columns is-4">
+         <div class="column is-4">
             <div class="card">
                <div class="card-content">
                   <div class="media">
                      <div class="media-content">
+                         <!-- displays product title -->
                         <p class="title is-4">{{ product.title }}</p>
+                         <!-- displays product price -->
+                        <p class="subtitle is-6"> £ {{ product.price}}</p>
                      </div>
                   </div>
                </div>
             </div>
          </div>
-         {{ product.title }}
       {% endfor %}
    </div>
 {% endblock %}
