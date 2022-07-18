@@ -25,5 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('Contact_Us/', contact, name='contact'),
-    path('<slug:slug>/View_Details/',view_product, name='view_product'),
+    path('<slug:slug>/View_Details/', view_product, name='view_product'),
 ]
