@@ -32,6 +32,13 @@
                     Home
                 </a>
                 
+                <!-- Category links-->
+                {% for category in category_menu %}
+                <a class="navbar-item">
+                    {{ category.title }}
+                </a>
+                {% endfor %}
+
                 <!-- Contact us page link -->
                 <a class="navbar-item" href="{% url 'contact' %}">
                     <i class="bi bi-person-lines-fill d-inline-block align-text-top"></i>
