@@ -4,7 +4,8 @@ from apps.store.models import Product
 
 # Home view
 def home(request):
-    products = Product.objects.all()
+    # only featured products are shown on the homepage
+    products = Product.objects.filter(featured=True)
 
     context = {
         'products': products
@@ -16,3 +17,4 @@ def home(request):
 # Contact view
 def contact(request):
     return render(request, 'contact_us.html')
+
