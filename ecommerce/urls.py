@@ -17,14 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from apps.core.views import home, contact
+from apps.core.views import home, contact, about_us
 from apps.store.views import view_product, category_details
+
 
 # url configarations for apps
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('Contact_Us/', contact, name='contact'),
+    path('About_Us/', about_us, name='about_us'),
     path('<slug:category_slug>/<slug:slug>/View_Details/', view_product, name='view_product'),
     path('<slug:slug>/View_Details/', category_details, name='category_details'),
+
 ]
