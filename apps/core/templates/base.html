@@ -37,12 +37,6 @@
                 {% for category in category_menu %}
                     <a class="navbar-item" href="{% url 'category_details' category.slug %}">{{ category.title }}</a>
                 {% endfor %}
-
-                <!-- Contact us page link -->
-                <a class="navbar-item" href="{% url 'contact' %}">
-                    <i class="bi bi-person-lines-fill d-inline-block align-text-top"></i>
-                    Contact Us
-                </a>
             </div>
             
        </nav>
@@ -59,6 +53,21 @@
         
  </body>
  <footer class="footer">
-       <strong>Brieanna McDonald ©2022| Bloggerverse inc, all rights reserved</strong> <div class=icons><a href="https://github.com/bmcdonald2000" target="_blank" rel="noopener noreferrer"><i class='bi bi-github icons'></i></a> <a href="mailto:bmcdonald1406@gmail.com" target="_blank" rel="noopener noreferrer"><i class='bi bi-envelope icons'></i></a> <a href="https://www.linkedin.com/in/brieanna-mcdonald-0263b1212/" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin icons"></i></a> <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram icons"></i></a> <a href="https://twitter.com/?lang=en" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter icons"></i></a></div>
+    <div class="columns">
+        <div class="column is-4">
+            <!-- Contact us page link -->
+            <a class="navbar-item" href="{% url 'contact' %}">
+                <i class="bi bi-person-lines-fill d-inline-block align-text-top"></i>
+                Contact Us
+            </a>
+            
+            <!-- About us page link -->
+            <a class="navbar-item" href="{% url 'about_us' %}">
+                <i class="bi bi-file-person-fill d-inline-block align-text-top"></i>
+                About Us
+            </a>
+        </div>
+    </div>
+    <strong>Brieanna McDonald ©2022| E-store, all rights reserved</strong> <div class=icons><a href="https://github.com/bmcdonald2000" target="_blank" rel="noopener noreferrer"><i class='bi bi-github icons'></i></a> <a href="mailto:bmcdonald1406@gmail.com" target="_blank" rel="noopener noreferrer"><i class='bi bi-envelope icons'></i></a> <a href="https://www.linkedin.com/in/brieanna-mcdonald-0263b1212/" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin icons"></i></a> <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram icons"></i></a> <a href="https://twitter.com/?lang=en" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter icons"></i></a></div>
  </footer>
 </html>
