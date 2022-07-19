@@ -18,3 +18,7 @@ def home(request):
 def contact(request):
     return render(request, 'contact_us.html')
 
+
+# About us view
+def about_us(request):
+    return render(request, 'about_us.html')
