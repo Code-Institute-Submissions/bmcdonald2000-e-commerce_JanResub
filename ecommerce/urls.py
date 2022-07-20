@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from apps.cart.views import cart
 from apps.core.views import home, contact, about_us
 from apps.store.views import view_product, category_details
 
@@ -24,6 +25,7 @@ from apps.store.views import view_product, category_details
 # url configarations for apps
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('cart/', cart, name='cart'),
     path('', home, name='home'),
     path('Contact_Us/', contact, name='contact'),
     path('About_Us/', about_us, name='about_us'),
