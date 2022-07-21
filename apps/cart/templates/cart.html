@@ -5,7 +5,65 @@
  
 <!-- Template content -->
 {% block content %}
+   <div id="cartapp">
+      <!-- shows cart items or empty cart message -->
+         <h1 class="title"> Checkout </h1>
+         {% if cart_details %}
+            {% for item in cart_details %}
+                  {% with product=item.product %}
+                     <br>
+                     <p>{{ product.title }}</p>
+                     <button @click="deleteFromCart({{product.id}})">Remove</button>
+                     <br>
+                  {% endwith %}
+            {% endfor %}
+         {% else %}
+            <p> Your cart is empty !</p>
+         {% endif %}
+   </div>
+{% endblock %}
 
-   <h1 class="title"> Checkout </h1>
-   
+<!-- creates vue app -->
+{% block scripts %}
+<script>
+   var productsapp = new Vue({
+      el: '#cartapp',
+      delimeters: ['[[',']]'],
+      data () {
+         return {
+
+         }
+      },
+
+      mounted() {
+            console.log('Mounted');
+      },
+
+      // product id is sent to api and added to cart or an error is displayed
+      methods: {
+         deleteFromCart(product_id) {
+            console.log('Remove product_id:', product_id)
+
+         
+            var data = {'product_id': product_id, 'update': false, 'quantity': 1}
+            fetch('/api/delete_from_cart/', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken':'{{ csrf_token}}'
+               },
+               credentials: 'same-origin',
+               body: JSON.stringify(data)
+            })
+            .then((response) =>{
+               console.log(response)
+            })
+            .catch(function (error){
+               console.log('Error 2');
+               console.log(error);
+            })
+         }
+      }
+   });
+</script>
 {% endblock %}
