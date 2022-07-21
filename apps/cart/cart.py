@@ -1,12 +1,14 @@
 from django.conf import settings
 
+from apps.store.models import Product
+
 
 # Cart function
 class Cart(object):
     # function to remove items from the basket after 12 hours
     def __init__(self, request):
         self.session = request.session
-        cart = self.session.get(settings.SESSION_COOKIE_AGE)
+        cart = self.session.get(settings.CART_SESSION_ID)
 
         # if the cart is empty a new session will be started
         if not cart:
@@ -14,24 +16,56 @@ class Cart(object):
 
         self.cart = cart
 
+    # function to iterate through the products
+    def __iter__(self):
+        product_ids = self.cart.keys()
+
+        clean_product = []
+
+        for p in product_ids:
+            clean_product.append(p)
+
+            self.cart[str(p)]['product'] = Product.objects.get(pk=p)
+
+        for item in self.cart.values():
+            item['total'] = float(item['price']) * int(item['quantity'])
+
+            yield item
+
+    # function to calculate product length
+    def __len__(self):
+        return sum(item['quantity'] for item in self.cart.values())
+
     # function to update the cart
     def add(self, product, quantity=1, update_quantity=False):
         product_id = str(product.id)
         price = product.price
 
-        # if a product id, doesnt exist one is created.
+        print('Product_id:', product_id)
+
+        # if a product id, doesnt exist one is created
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity':0, 'price':price, 'id':product_id}
+            print('test 1')
+            self.cart[product_id] = {'quantity': 0, 'price': price, 'id': product_id}
 
         # quantity of items in the cart is updated
         if update_quantity:
+            print('test 2')
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] = self.cart[product_id]['quantity'] + 1
-
+        # save cart
         self.save()
+
+    # function to delete items from cart
+    def delete(self, product_id):
+        print('del')
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.save()
 
     # function to update and save the browser session
     def save(self):
+        print('test 3')
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
