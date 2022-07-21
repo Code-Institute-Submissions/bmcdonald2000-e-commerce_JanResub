@@ -21,7 +21,7 @@ from apps.cart.views import cart
 from apps.core.views import home, contact, about_us
 from apps.store.views import view_product, category_details
 
-from apps.store.api import add_to_cart
+from apps.store.api import add_to_cart, delete_from_cart
 
 # url configarations for apps
 urlpatterns = [
@@ -31,11 +31,12 @@ urlpatterns = [
     path('Contact_Us/', contact, name='contact'),
     path('About_Us/', about_us, name='about_us'),
 
-    # API paths
-    path('api/add_to_cart', add_to_cart, name='add'),
-
     # Store Paths
     path('<slug:category_slug>/<slug:slug>/View_Details/', view_product, name='view_product'),
     path('<slug:slug>/View_Details/', category_details, name='category_details'),
+
+    # API paths
+    path('api/add_to_cart/', add_to_cart, name='add'),
+    path('api/delete_from_cart/', delete_from_cart, name='delete'),
 
 ]
