@@ -1,5 +1,15 @@
 from django.shortcuts import render
 
+from .cart import Cart
 
+
+# function to add item to cart
 def cart(request):
-    return render(request, 'cart.html')
+
+    cart_details = Cart(request)
+
+    context = {
+        'cart_details': cart_details
+    }
+
+    return render(request, 'cart.html', context)
