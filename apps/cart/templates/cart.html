@@ -27,7 +27,7 @@
                            <tr>
                               <!-- the product information is shown in the table -->
                               <td>{{ product.title }}</td>
-                              <td>{{ item.quantity }}</td>
+                              <td>{{ item.quantity }} <button @click="increaseQuantity({{product.id}})"> + </button></td>
                               <td>{{ item.price }}</td>
                               <td><button @click="deleteFromCart({{product.id}})">Remove</button></td>
                            </tr>                           
@@ -58,9 +58,8 @@
       mounted() {
             console.log('Mounted');
       },
-
-      // product id is sent to api and added to cart or an error is displayed
-      methods: {
+         
+         // product id is sent to api and removed from cart or an error is displayed
          deleteFromCart(product_id) {
             console.log('Remove product_id:', product_id)
 
@@ -83,7 +82,7 @@
                console.log(error);
             })
          }
-      }
+   
    });
 </script>
 {% endblock %}
