@@ -9,14 +9,34 @@
       <!-- shows cart items or empty cart message -->
          <h1 class="title"> Checkout </h1>
          {% if cart_details %}
-            {% for item in cart_details %}
-                  {% with product=item.product %}
-                     <br>
-                     <p>{{ product.title }}</p>
-                     <button @click="deleteFromCart({{product.id}})">Remove</button>
-                     <br>
-                  {% endwith %}
-            {% endfor %}
+            <!-- table to display cart information -->
+            <div class="table">
+               <table class="table">
+                  <!-- table headers -->
+                  <thead>
+                     <th>Product</th>
+                     <th>Quantity</th>
+                     <th>Price </th>
+                     <th></th>
+                  </thead>
+                  <tbody>
+                     <!-- when an item is in the cart -->
+                     {% for item in cart_details %}
+                        {% with product=item.product %}
+                           <br>
+                           <tr>
+                              <!-- the product information is shown in the table -->
+                              <td>{{ product.title }}</td>
+                              <td>{{ item.quantity }}</td>
+                              <td>{{ item.price }}</td>
+                              <td><button @click="deleteFromCart({{product.id}})">Delete</button></td>
+                           </tr>                           
+                           <br>
+                        {% endwith %}
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
          {% else %}
             <p> Your cart is empty !</p>
          {% endif %}
