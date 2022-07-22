@@ -58,8 +58,32 @@
       mounted() {
             console.log('Mounted');
       },
+
+      // product id is sent to api and this data is fetched to display the is increased quantity in the cart or an error is displayed
+      methods: {
+         increaseQuantity(product_id) {
+
+            var data = {'product_id': product_id, 'update': false, 'quantity': 1}
+            fetch('/api/increase_quantity/', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken':'{{ csrf_token}}'
+               },
+               credentials: 'same-origin',
+               body: JSON.stringify(data)
+            })
+            .then((response) =>{
+               console.log(response)
+            })
+            .catch(function (error){
+               console.log('Error 1');
+               console.log(error);
+            })
+
+         },
          
-         // product id is sent to api and removed from cart or an error is displayed
+         // product id is sent to api and this data is fetched from the api, the product is then removed from cart or an error is displayed
          deleteFromCart(product_id) {
             console.log('Remove product_id:', product_id)
 
@@ -82,7 +106,7 @@
                console.log(error);
             })
          }
-   
+      }
    });
 </script>
 {% endblock %}
