@@ -7,6 +7,8 @@
 <!-- Template content -->
 {% block content %}
    <div id="productsapp">
+      <!-- displays product images -->
+      <img src="/media/images/{{product.image }}" alt="product image">
       <!-- displays product title -->
       <h1 class="title">{{product.title}}</h1>
       <!-- displays product price -->
@@ -28,7 +30,8 @@
 // creates vue app
    var productsapp = new Vue({
       el: '#productsapp',
-      delimeters: ['[[',']]'],
+      delimiters: ['[[',']]'],
+      store: store,
       data () {
          return {
 
@@ -56,6 +59,8 @@
             })
             .then((response) =>{
                console.log(response)
+               // increase number of item in cart
+               store.commit('increase', 1);
             })
             .catch(function (error){
                console.log('Error 2');

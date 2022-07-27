@@ -16,16 +16,21 @@
          <!-- Bulma card to display product data -->
          <div class="column is-4">
             <div class="card">
-               <div class="card-content">
-                  <div class="media">
-                     <div class="media-content">
-                         <!-- displays product title -->
-                        <p class="title is-4">{{ product.title }}</p>
-                         <!-- displays product price -->
-                        <p class="subtitle is-6"> £ {{ product.price}}</p>
+               <div class="card-image">
+                  <figure class="image">
+                     <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                  </figure>
+               </div>
+                  <div class="card-content">
+                     <div class="media">
+                        <div class="media-content">
+                           <!-- displays product title -->
+                           <p class="title is-4">{{ product.title }}</p>
+                           <!-- displays product price -->
+                           <p class="subtitle is-6"> £ {{ product.price}}</p>
+                        </div>
                      </div>
                   </div>
-               </div>
                <!-- Bulma footer with link to product description -->
                <footer class="card-footer">
                      <a href="{% url 'view_product' product.category.slug product.slug %}" class="card-footer-item">View</a>
