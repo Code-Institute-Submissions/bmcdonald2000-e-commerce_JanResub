@@ -69,3 +69,9 @@ class Cart(object):
         print('test 3')
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
+
+    def total_length(self):
+        return sum(int(item['quantity']) for item in self.cart.values())
+
+    def total_cost(self):
+        return sum(float(item['total']) for item in self.cart.values())
