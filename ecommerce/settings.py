@@ -24,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t*_wdoy2qpoa)3jgmx5*_e)b6-%)4=n63udl^*s*a5pnagr9$!'
+# SECRET_KEY = 'django-insecure-t*_wdoy2qpoa)3jgmx5*_e)b6-%)4=n63udl^*s*a5pnagr9$!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tranquil-temple-81228.herokuapp.com/']
 
 # Items removed from cart after 12 hours
 SESSION_COOKIE_AGE = 43200
