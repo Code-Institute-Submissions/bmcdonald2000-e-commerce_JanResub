@@ -2,10 +2,50 @@ import json
 from .models import Product
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from django. conf import settings
 
 from apps.cart.cart import Cart
 from apps.order.utils import checkout
 from apps.order.models import Order, Item
+
+
+# api function to create a checkout session
+def checkout_session(request):
+    cart = Cart()
+
+    stripe.api_key = settings.STRIPE_HIDDEN
+
+    items = []
+
+    for item in cart:
+        product = item['product']
+
+        obj = {
+            'price_data': {
+                'currency': 'gbp',
+                'product_data': {
+                    'name': product.title
+                },
+                'unit_amount': int(product.price * 100)
+            },
+            'quantity': item['quantity']
+        }
+
+        items.append(obj)
+    
+    session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=items,
+            mode='payment',
+            success_url='http://127.0.0.1:8000/cart/success/',
+            cancel_url='http://127.0.0.1:8000/cart/'
+    )
+
+    return JsonResponse({'session': session})
+
+
+
+
 
 
 # checkout api function
