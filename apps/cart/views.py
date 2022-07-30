@@ -21,3 +21,10 @@ def cart(request):
     }
 
     return render(request, 'cart.html', context)
+
+# function for successful orders
+def success(request):
+    cart = Cart(request)
+    cart.clear()
+    
+    return render(request, 'success.html')
