@@ -24,10 +24,11 @@ from apps.cart.views import cart, success
 from apps.core.views import home, contact, about_us
 from apps.store.views import view_product, category_details
 
-from apps.store.api import add_to_cart, delete_from_cart, Checkout
+from apps.store.api import add_to_cart, delete_from_cart, Checkout , checkout_session
 
 # url configarations for apps
 urlpatterns = [
+    path('api/create_checkout_session/', checkout_session, name='checkout_session'),
     path('admin/', admin.site.urls),
     path('cart/', cart, name='cart'),
     path('cart/success', success, name='success'),
