@@ -20,7 +20,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from apps.cart.views import cart
+from apps.cart.views import cart, success
 from apps.core.views import home, contact, about_us
 from apps.store.views import view_product, category_details
 
@@ -30,6 +30,7 @@ from apps.store.api import add_to_cart, delete_from_cart, Checkout
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cart/', cart, name='cart'),
+    path('cart/success', success, name='success'),
     path('', home, name='home'),
     path('Contact_Us/', contact, name='contact'),
     path('About_Us/', about_us, name='about_us'),
