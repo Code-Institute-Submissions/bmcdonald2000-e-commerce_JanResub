@@ -29,7 +29,8 @@ SECRET_KEY = 'django-insecure-t*_wdoy2qpoa)3jgmx5*_e)b6-%)4=n63udl^*s*a5pnagr9$!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tranquil-temple-81228.herokuapp.com/']
+# 3rd party package is handling hosting
+ALLOWED_HOSTS = []
 
 # Items removed from cart after 12 hours
 SESSION_COOKIE_AGE = 43200
@@ -144,3 +145,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# django-heroku updates variables in my local namespace
+import django_heroku
+django_heroku.settings(locals())
