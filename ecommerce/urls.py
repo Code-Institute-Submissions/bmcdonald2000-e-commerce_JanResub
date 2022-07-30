@@ -24,7 +24,7 @@ from apps.cart.views import cart
 from apps.core.views import home, contact, about_us
 from apps.store.views import view_product, category_details
 
-from apps.store.api import add_to_cart, delete_from_cart
+from apps.store.api import add_to_cart, delete_from_cart, Checkout
 
 # url configarations for apps
 urlpatterns = [
@@ -41,5 +41,6 @@ urlpatterns = [
     # API paths
     path('api/add_to_cart/', add_to_cart, name='add'),
     path('api/delete_from_cart/', delete_from_cart, name='delete'),
+    path('api/checkout/', Checkout, name='checkout_api'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
