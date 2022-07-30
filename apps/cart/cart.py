@@ -70,8 +70,20 @@ class Cart(object):
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
 
+    # function to clear basket on checkout
+    def clear(self):
+        self.session[settings.CART_SESSION_ID]
+        self.session.modified = True
+
+    # fucntion to calculate total quantity in the cart
     def total_length(self):
         return sum(int(item['quantity']) for item in self.cart.values())
 
+    #  function to calculate total cost of the cart
     def total_cost(self):
-        return sum(float(item['total']) for item in self.cart.values())
+        if "total" in self.cart.values():
+            return sum(float(item['total']) for item in self.cart.values())
+        else:
+            return 0
+
+
