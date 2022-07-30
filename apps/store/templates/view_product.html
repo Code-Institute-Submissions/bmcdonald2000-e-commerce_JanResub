@@ -9,10 +9,11 @@
    <div id="productsapp">
       <!-- displays product images -->
       <img src="/media/images/{{ product.image }}" alt="product image">
+      <hr>
       <!-- displays product title -->
       <h1 class="title">{{product.title}}</h1>
       <!-- displays product price -->
-      <p class="subtitle"> £ {{ product.price}}</p>
+      <p class="subtitle"> £ {{ product.price }}</p>
 
       <!-- if the product has a description -->
       {% if product.description %}
