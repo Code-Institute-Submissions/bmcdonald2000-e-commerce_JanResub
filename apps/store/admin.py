@@ -1,9 +1,9 @@
 from django.contrib import admin
-
-# Register your models here.
-from .models import Category, Product
+from .models import Category, Product, ProductImages, ProductReview
 
 
 # registers my models with the django admin so I can use them.
 admin.site.register(Category)
 admin.site.register(Product)
+admin.site.register(ProductImages)
+admin.site.register(ProductReview)
