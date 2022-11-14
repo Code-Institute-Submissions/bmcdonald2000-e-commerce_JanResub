@@ -214,13 +214,13 @@
       data () {
          return {
             errors: [],
-            first_name: '',
-            last_name: '',
-            email: '',
-            address: '',
-            postcode: '',
-            city: '',
-            phone: '',
+            first_name: '{{first_name}}',
+            last_name: '{{last_name}}',
+            email: '{{email}}',
+            address: '{{ address }}',
+            postcode: '{{ postcode }}',
+            city: '{{ city }}',
+            phone: '{{ phone }}',
             products: [{{productsstring|safe}}],
             coupon_value: 0,
             coupon_code: '',
@@ -324,8 +324,12 @@
             
             // if the form is valid
             if (this.errors.length === 0){
-               // fetch chekout api
-               fetch('/api/checkout/', {
+
+               // stripe public key
+               var stripe = Stripe('{{ public }}');
+
+               // fetch checkout session API
+               fetch('/api/checkout_session/', {
                   method: 'POST',
                   headers: {
                      'Content-Type': 'application/json',
@@ -334,10 +338,27 @@
                   credentials: 'same-origin',
                   body: JSON.stringify(data)
                })
-               .then((response) =>{
-                  console.log('Success');
-                  console.log(response);
 
+               // checkout session api data is returned
+               .then(function(response) {
+                  console.log(response)
+                  return response.json()
+               })
+               // function to redirect to stripe checkout
+               .then(function(session) {
+                  console.log(session)
+                  return stripe.redirectToCheckout({ sessionId: session.session.id })
+               })
+               // if the redirect fails due to a browser or netwrok error the user is notified.
+               .then(function(result) {
+                  console.log(result)
+                  if (result.error) {
+                     alert(result.error.messsage)
+                  }
+               })       
+               .catch(function(error) {
+                  console.log('Error:', error);
+               });
             }
          },
 
