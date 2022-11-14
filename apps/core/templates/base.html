@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
  <head>
        <!-- loads the static files -->
@@ -11,17 +10,18 @@
        <meta name="description" content="This is an ecommerce app designed for people who love shopping">
  
        <!-- E-commerce -->
-       <title> {% block title %}{% endblock%}| E-commerce</title>
+       <title> {% block title %}{% endblock%} | E-Store</title>
 
        <!-- Boostrap, Bulma and CSS links -->
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-       <link rel="stylesheet" type="text/css" href="{{ '/static/css/style.css' }}">
+       <link rel="stylesheet" type="text/css" href="{{'/static/css/style.css/'}}">
+       <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
  </head>
  <body>
  
        <!-- Bulma navbar -->
-       <nav class="navbar is-dark">
+       <nav class="navbar is-dark" id="navbarapp">
         <!-- Site Logo -->
             <div class="navbar-brand">
                 <img src="{{ '/static/images/logo.png' }}" alt="logo" width="100" height="70" class="d-inline-block">
@@ -30,19 +30,58 @@
                     <i class="bi bi-house-door-fill d-inline-block align-text-top"></i>
                     Home
                 </a>
-                
-                <!-- Category links-->
-                {% for category in category_menu %}
-                    <a class="navbar-item" href="{% url 'category_details' category.slug %}">{{ category.title }}</a>
-                {% endfor %}
-                <!-- link to cart -->
-                <div class="navbar-item" id="navbarapp">
-                    <a class="button is-primary is-rounded is-hovered" href="{% url 'cart' %}">
-                        <i class="bi bi-cart4"></i>
-                        <!-- shows number of items in cart -->
-                        Cart ([[ numItems ]])
-                    </a>
-                </div>
+                <!-- toggle menu -->
+                <a @click="toggleMenu()" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+
+                <!-- search bar -->
+                <div id="main-navbar" class="navbar-menu" :class="{ 'is-active': menuClass }">
+                    <div class="navbar-start">
+                        <div class="navbar-item">
+                            <form method="get" action="{% url 'search' %}">
+                                <div class="field has-addons">
+                                    <div class="control">
+                                        <input type="text" class="input" placeholder="Search for an item" name="query">
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-success">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="navbar-end">
+
+            <!-- Category links-->
+            {% for category in category_menu %}
+                    <!-- main categories are displayed -->
+                    {% if not category.children.all %}
+                        <a  href="{% url 'category_details' category.slug %}" class="navbar-item">{{ category.title|title }}</a>
+                    {% else %}
+                    <!-- dropwdown categories -->
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a href="{% url 'category_details' category.slug %}" class="navbar-link">{{ category.title }}</a>
+                            <div class="navbar-dropdown">
+                                <!-- sub categories are displayed -->
+                                {% for subcategory in category.children.all %}
+                                    <a href="{% url 'category_details' subcategory.slug %}" class="navbar-item">{{ subcategory.title }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}		
+            {% endfor %}
+            
+            <!-- link to cart -->
+            <div class="navbar-item">
+                <a class="button is-primary is-rounded is-hovered" href="{% url 'cart' %}">
+                    <i class="bi bi-cart4"></i>
+                    <!-- shows number of items in cart -->
+                    Cart ([[ numItems ]])
+                </a>
+            </div>
             </div>
        </nav>
 
@@ -56,6 +95,7 @@
             </div>
         </section>
         
+
  <footer class="footer">
     <div class="columns">
         <div class="column is-4">
@@ -75,7 +115,6 @@
     <strong>Brieanna McDonald ©2022| E-store, all rights reserved</strong> <div class=icons><a href="https://github.com/bmcdonald2000" target="_blank" rel="noopener noreferrer"><i class='bi bi-github icons'></i></a> <a href="mailto:bmcdonald1406@gmail.com" target="_blank" rel="noopener noreferrer"><i class='bi bi-envelope icons'></i></a> <a href="https://www.linkedin.com/in/brieanna-mcdonald-0263b1212/" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin icons"></i></a> <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram icons"></i></a> <a href="https://twitter.com/?lang=en" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter icons"></i></a></div>
  </footer>
  <script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
  <script>
         // vue cart functionality
         var store = new Vuex.Store({
@@ -83,6 +122,7 @@
                 numItems: {{ cart.total_length }},
                 totalCost: {{ cart.total_cost }}
             },
+
             mutations:{
                 increase(state, quantity) {
                     state.numItems += quantity;
@@ -97,11 +137,23 @@
             el: '#navbarapp',
             delimiters:['[[',']]'],
             store: store,
+            data () {
+					return {
+						menuClass: false
+					}
+			},
             computed:{
                 numItems: function() {
                     return store.state.numItems
                 }
-            }
+            },
+            methods: {
+					toggleMenu() {
+						console.log('toggleMenu');
+
+						this.menuClass = !this.menuClass;
+					}
+			}
         });
  </script>
     {% block scripts %}
