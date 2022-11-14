@@ -50,3 +50,16 @@ def cart_details(request):
     }
     # data is retruned in the cart template page
     return render(request, 'cart.html', context)
+
+# Success function
+def success(request):
+    # if the payment is a success the cart is cleared
+    cart = Cart(request)
+    cart.clear()
+    # and the user is returned to the sucess page
+    return render(request, 'success.html')
+
+# fail function
+class fail (TemplateView):
+    # if the payment fails, the user is redirected to the cancel page
+    template_name = "cancel.html"
