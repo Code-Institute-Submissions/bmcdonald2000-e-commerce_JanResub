@@ -9,107 +9,109 @@
       <!-- shows cart items or empty cart message -->
          <h1 class="title"> Checkout </h1>
           <!-- when an item is in the cart -->
-         {% if cart_details %}
+         {% if cart %}
             <!-- table to display cart information -->
             <div v-if="products.length > 0">
                <div class="table">
-                  <table class="table">
+                  <table class="table is-fullwidth is-striped">
                      <!-- table headers -->
                      <thead>
+                        <th></th>
                         <th>Product</th>
                         <th>Quantity</th>
                         <th>Price </th>
                         <th></th>
                      </thead>
+
                      <tbody>
                         <!-- the product information is shown in the table -->
                         <tr v-for="product in products">
-                           <td>[[ product.title ]]</td>
+                           <td>
+                              <figure class="image is-48x48">
+                                 <img :src="product.thumbnail">
+                              </figure>
+                           </td>
+                           <td>
+                              <a :href="product.url">
+                                 [[ product.title ]]
+                              </a>
+                           </td>
                            <td><button @click="decreaseQuantity(product.id, product.quantity, product.price)">-</button> [[ product.quantity ]] <button @click="increaseQuantity(product.id, product.quantity, product.price)">+</button></td>
-                           <td> £ [[ product.total ]]</td>
-                           <td><button @click="deleteFromCart(product.id)">Remove</button></td>
+                           <td> £ [[ product.total ]] </td>
+                           <td><button @click="deleteFromCart(product.id)" class="button is-danger">Remove</button></td>
                         </tr>
                      </tbody>
+
                      <tfoot>
                         <tr>
-                           <td> Total: </td>
-                           <!-- total number of items -->
-                           <td> [[ numItems ]]</td>
-                           <!-- total cost-->
-                           <td> £ [[ totalCost ]]</td>
+                           <td> 
+                                 <td> Total: </td>
+                                 <!-- total number of items -->
+                                 <td> [[ numItems ]]</td>
+                                 <!-- total cost-->
+                                 <td> £ [[ totalCost.toFixed(2) ]]</td>
+                           </td>
+                        </tr>
+
+                        <!-- total cost with coupon -->
+                        <tr v-if="coupon_value">
+                           <td colspan="3">Total cost with coupon:</td>
+                           <td> £ [[ totalCostWithCoupon.toFixed(2)]]</td>
                         </tr>
                      </tfoot>
                   </table>
+
+                  <hr>
+
+                  <!-- code value hidden from th user -->
+                  <input type="hidden" v-model="coupon_value">
+
+                  <!-- input box for coupon code -->
+                  <h2 class="subtitle">Coupon code</h2>
+
+                  <!-- Coupon Value -->
+                  <div class="field has-addons">
+                     <div class="control">
+                         <input type="text" v-model="coupon_code" class="input">
+                     </div>
+
+                     <!-- button to apply coupon -->
+                     <div class="control">
+                         <button @click="applyCoupon()" class="button is-success">Apply</button>
+                     </div>
+                 </div>
+
+                 <!-- error message for invalid coupon code -->
+                 <div class="notification is-warning" v-if="showCouponCodeError">
+                     <p>This coupon code is not valid!</p>
+                 </div>
+
+                  <hr>
                </div>
-               <!-- checkout form is submitted -->
-               <form v-on:submit.prevent="submitForm()">
-                  <div class="field">
 
-                  <!-- Firsy name field -->
-                     <div class="control">
-                        <label> First name </label>
-                        <input type="text" name="first_name" v-model="first_name">
-                     </div>
-                  </div>
-
-                  <!-- Last name field -->
+                  <!-- checkout button -->
                   <div class="field">
                      <div class="control">
-                        <label> Last name </label>
-                        <input type="text" name="last_name" v-model="last_name">
-                     </div>
-                  </div>
-
-                  <!-- Email field -->
-                  <div class="field">
-                     <div class="control">
-                        <label> Email </label>
-                        <input type="text" name="email" v-model="email">
-                     </div>
-                  </div>
-
-                  <!-- Address field -->
-                  <div class="field">
-                     <div class="control">
-                        <label> Address </label>
-                        <input type="text" name="address" v-model="address">
-                     </div>
-                  </div>
-
-                  <!-- Postcode field -->
-                  <div class="field">
-                     <div class="control">
-                        <label> Postcode </label>
-                        <input type="text" name="postcode" v-model="postcode">
-                     </div>
-                  </div>
-
-                  <!-- City field -->
-                  <div class="field">
-                     <div class="control">
-                        <label> City </label>
-                        <input type="text" name="city" v-model="city">
-                     </div>
-                  </div>
-
-                  <!-- Check out button -->
-                  <div class="field">
-                     <div class="control">
-                        <button class="button is-primary">Check out</button>
+                        <!-- stripe checkout -->
+                        <button class="button is-primary">Pay with stripe</button>
                      </div>
                   </div>
                </form>
             </div>
             <!-- when no products are in the cart the empty card message shows -->
-            <p v-else="">Your cart is empty !</p>
+            <p v-else>Your cart is empty !</p>
          {% else %}
             <p> Your cart is empty !</p>
          {% endif %}
    </div>
 {% endblock %}
 
-<!-- creates vue app -->
+
 {% block scripts %}
+<!-- link for stripe -->
+<script type="application/javascript" src="https://js.stripe.com/v3/"></script>
+
+<!-- creates vue app -->
 <script>
    var productsapp = new Vue({
       el: '#cartapp',
@@ -123,9 +125,14 @@
             address: '',
             postcode: '',
             city: '',
-            products: [{{ productstring|safe }}]
+            phone: '',
+            products: [{{productsstring|safe}}],
+            coupon_value: 0,
+            coupon_code: '',
+            showCouponCodeError: false
          }
       },
+
       // calculates number of items and total costs
       computed:{
          numItems: function() {
@@ -133,20 +140,58 @@
          },
          totalCost: function() {
             return store.state.totalCost
+         },
+
+         totalCostWithCoupon: function() {
+            if (this.coupon_value > 0) {
+               coupon = store.state.totalCost * (parseInt(this.coupon_value) / 100)
+               return store.state.totalCost - coupon;
+            } else {
+               return store.state.totalCost;
+            }
          }
       },
-      // product id is sent to api and this data is fetched to display the is increased quantity in the cart or an error is displayed
+      
       methods: {
-         submitForm() {
-            console.log('Form Submitted');
+         // fucntion to apply the coupon
+         applyCoupon() {
+            // if a code is entered the code is fetched by the coupon api
+            if (this.coupon_code !== '') {
+               fetch('/api/valid_coupon/?coupon_code=' + this.coupon_code, {
+                   method: 'GET'
+               })
+               //  then a json response is returned
+               .then((response) => {
+                  return response.json();
+               })
+               //  if the coupon has a value then it is applied
+               .then((data) => {
+                  if (data.amount) {
+                     this.showCouponCodeError = false
+                     this.coupon_value = parseInt(data.amount)
+                  // if not the coupon error message is displayed
+                  } else {
+                     this.coupon_value = 0
+                     this.showCouponCodeError = true
+                  }
+               });
+            // if an invalid code is entered then the erorr messsage is displayed
+            } else {
+               this.showCouponCodeError = true
+            }
+         },
+         buy() {
 
+            // checkout form data
             var data = {
                'first_name': this.first_name,
                'last_name': this.last_name,
                'email': this.email,
                'address': this.address,
                'postcode': this.postcode,
-               'city': this.city
+               'city': this.city,
+               'phone': this.phone,
+               'coupon_code': this.coupon_code
             };
             // fetch chekout api
             fetch('/api/checkout/', {
@@ -169,70 +214,124 @@
                console.log(error);
             })
          },
+
          // fucntion to increase cart quantity
          increaseQuantity(product_id, quantity, price) {
-               console.log('Product_id:', product_id)
-
-            var data = {'product_id': product_id, 'update': true, 'quantity': parseInt(quantity)+ 1};
-
-            store.commit('increase', 1);
-            store.commit('UpdateTotal', parseFloat(price));
-            
-            // add to cart api is fetched to update cart data
-            fetch('/api/add_to_cart/', {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': '{{ csrf_token }}'
-               },
-               credentials: 'same-origin',
-               body: JSON.stringify(data)
-            })
-            .then((response) =>{
-               console.log(response)
+               console.log('Product_id:', product_id);
 
                for (var i = 0; i < this.products.length; i++){
                   var product = this.products[i];
 
                   if (product.id === product_id){
-                     // auto updates quantity
-                     this.products[i].quantity = parseInt(this.products[i].quantity) + 1;
-                     
-                     // auto updates prices
-                     this.products[i].total = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
-                  }
-               }
-            })
-            .catch(function (error){
-               console.log('Error 1');
-               console.log(error);
-            })
+                     // when quantity is less than the number of items available then the cart is updated
+                     if (quantity < product.num_available) {
+                           var data = {
+                                'product_id': product_id, 
+                                'update': true,
+                                'quantity': parseInt(quantity) + 1
+                           };
+                           
+                           store.commit('increase', 1);
+                           store.commit('UpdateTotal', parseFloat(price));
+                           
+                           // add to cart api is fetched to update cart data
+                           fetch('/api/add_to_cart/', {
+                              method: 'POST',
+                              headers: {
+                                 'Content-Type': 'application/json',
+                                 'X-CSRFToken': '{{ csrf_token }}'
+                              },
+                              credentials: 'same-origin',
+                              body: JSON.stringify(data)
+                           })
+                           
+                           .then((response) =>{
+                              console.log(response)
+                              
+                              for (var i = 0; i < this.products.length; i++){
+                                 var product = this.products[i];
 
+                                 if (product.id === product_id){
+                                    // auto updates quantity
+                                    this.products[i].quantity = parseInt(this.products[i].quantity) + 1;
+                                    
+                                    // auto updates prices
+                                    this.products[i].total = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
+                                 }
+                              }
+                           })
+                           .catch(function (error){
+                              console.log('Error 1');
+                              console.log(error);
+                           })
+
+                     } else{
+                        alert('No more items in stock!');
+                     }
+                  } 
+               }
          },
 
          // decrease quantity for items in the cart
          decreaseQuantity(product_id, quantity, price) {
-            console.log('Product_id:', product_id)
+               console.log('Product_id:', product_id);
 
-            var data = {
-               'product_id': product_id, 
-               'update': true, 
-               'quantity': parseInt(quantity)- 1
-            };
+               var data = {
+                  'product_id': product_id, 
+                  'update': true, 
+                  'quantity': parseInt(quantity)- 1
+               };
 
-            // if quanity is zero, item is removed from basket
-            if (parseInt(quantity) - 1 === 0) {
-               this.deleteFromCart(product_id);
-            } else {
+               // if quanity is zero, item is removed from basket
+               if (parseInt(quantity) - 1 === 0) {
+                  this.deleteFromCart(product_id);
+               } else {
 
-               store.commit('increase', -1);
-               store.commit('UpdateTotal', -parseFloat(price));
-         
-               fetch('/api/add_to_cart/', {
+                  store.commit('increase', -1);
+                  store.commit('UpdateTotal', -parseFloat(price));
+            
+                  fetch('/api/add_to_cart/', {
+                     method: 'POST',
+                     headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                     },
+                     credentials: 'same-origin',
+                     body: JSON.stringify(data)
+                  })
+                  .then((response) =>{
+                     console.log(response)
+
+                     for (var i = 0; i < this.products.length; i++){
+                        var product = this.products[i];
+
+                        if (product.id === product_id){
+                           // auto updates quantity
+                           this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
+                           
+                           // auto updates prices
+                           this.products[i].total = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
+                        }
+                     }
+                  })
+                  .catch(function (error){
+                     console.log('Error 1');
+                     console.log(error);
+                  })
+               }
+            },
+
+            // product id is sent to api and this data is fetched from the api, the product is then removed from cart or an error is displayed
+            deleteFromCart(product_id){
+               console.log('Remove product_id:', product_id);
+
+               var data = {'product_id': product_id, 'update': false, 'quantity': 1};
+
+               fetch('/api/delete_from_cart/', {
                   method: 'POST',
                   headers: {
                      'Content-Type': 'application/json',
-                     'X-CSRFToken': '{{ csrf_token }}'
+                     'X-CSRFToken':'{{ csrf_token}}'
                   },
                   credentials: 'same-origin',
                   body: JSON.stringify(data)
@@ -240,50 +339,13 @@
                .then((response) =>{
                   console.log(response)
 
-                  for (var i = 0; i < this.products.length; i++){
-                     var product = this.products[i];
-
-                     if (product.id === product_id){
-                        // auto updates quantity
-                        this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
-                        
-                        // auto updates prices
-                        this.products[i].total = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
-                     }
-                  }
+                  this.products = this.products.filter(product => product.id !== product_id)
                })
                .catch(function (error){
-                  console.log('Error 1');
+                  console.log('Error 2');
                   console.log(error);
                })
             }
-         },
-
-         // product id is sent to api and this data is fetched from the api, the product is then removed from cart or an error is displayed
-         deleteFromCart(product_id) {
-            console.log('Remove product_id:', product_id)
-
-         
-            var data = {'product_id': product_id, 'update': false, 'quantity': 1}
-            fetch('/api/delete_from_cart/', {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken':'{{ csrf_token}}'
-               },
-               credentials: 'same-origin',
-               body: JSON.stringify(data)
-            })
-            .then((response) =>{
-               console.log(response)
-
-               this.products = this.products.filter(product => product.id !== product_id)
-            })
-            .catch(function (error){
-               console.log('Error 2');
-               console.log(error);
-            })
-         }
       }
    });
 </script>
