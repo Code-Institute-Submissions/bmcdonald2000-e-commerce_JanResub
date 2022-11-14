@@ -89,6 +89,82 @@
                   <hr>
                </div>
 
+               {% if not request.user.is_authenticated %}
+                    <p>Continue as guest or <a href="{% url 'login' %}">log in</a> / <a href="{% url 'signup' %}">sign up</a>.</p>
+
+                    <hr>
+               {% endif %}
+               <form v-on:submit.prevent="buy()">
+                  <!-- contact information section of the checkout -->
+                  <h2 class="title">Contact information</h2>
+
+                  <div class="columns">
+                     <div class="column is-6">
+                        <!-- form fields -->
+                        <div class="field">
+                           <!-- first name input field -->
+                           <label>First name</label>
+   
+                           <div class="control">
+                                 <input class="input" type="text" name="first_name" v-model="first_name">
+                           </div>
+                        </div>
+                        <!-- last name input field -->
+                        <div class="field">
+                           <label>Last name</label>
+   
+                           <div class="control">
+                                 <input class="input" type="text" name="last_name" v-model="last_name">
+                           </div>
+                        </div>
+                        <!-- email input field -->
+                        <div class="field">
+                           <label>E-mail</label>
+
+                           <div class="control">
+                                 <input class="input" type="text" name="email" v-model="email">
+                           </div>
+                        </div>
+                        <!-- phone input field -->
+                        <div class="field">
+                           <label>Phone</label>
+
+                           <div class="control">
+                                 <input class="input" type="text" name="phone" v-model="phone">
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- address input field -->
+                     <div class="column is-6">
+                        <div class="field">
+                           <label>Address</label>
+   
+                           <div class="control">
+                                 <input class="input" type="text" name="address" v-model="address">
+                           </div>
+                        </div>
+                        
+                        <!-- postcode input field  -->
+                        <div class="field">
+                           <label>Postcode</label>
+   
+                           <div class="control">
+                                 <input class="input" type="text" name="postcode" v-model="postcode">
+                           </div>
+                        </div>
+
+                        <!-- city input field  -->
+                        <div class="field">
+                           <label>city</label>
+   
+                           <div class="control">
+                              <input class="input" type="text" name="city" v-model="city">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
                   <!-- checkout button -->
                   <div class="field">
                      <div class="control">
@@ -103,6 +179,24 @@
          {% else %}
             <p> Your cart is empty !</p>
          {% endif %}
+
+         <!-- line break -->
+         <br>
+
+         <!-- error messages is displayed for each field -->
+         <div v-if="errors.length > 0">
+            <article class="message is-danger" v-for="error in errors">
+                <div class="message-header">
+                    <p>Error</p>
+                </div>
+                <div class="message-body">
+                    [[ error ]]
+                </div>
+            </article>
+        </div>
+         
+         <!-- line break -->
+         <br>
    </div>
 {% endblock %}
 
@@ -119,6 +213,7 @@
       store: store,
       data () {
          return {
+            errors: [],
             first_name: '',
             last_name: '',
             email: '',
@@ -193,26 +288,57 @@
                'phone': this.phone,
                'coupon_code': this.coupon_code
             };
-            // fetch chekout api
-            fetch('/api/checkout/', {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': '{{ csrf_token }}'
-               },
-               credentials: 'same-origin',
-               body: JSON.stringify(data)
-            })
-            .then((response) =>{
-               console.log('Success');
-               console.log(response);
 
-               window.location.href = '/'
-            })
-            .catch(function (error){
-               console.log('Error 2');
-               console.log(error);
-            })
+            console.log('data:',data)
+            // clears all error messages
+            this.errors = [];
+
+            // error messages for each field
+            if (data.first_name === '' ){
+               this.errors.push('Enter your first name');
+            }
+
+            if (data.last_name === '' ){
+               this.errors.push('Enter your last name');
+            }
+
+            if (data.email === '' ){
+               this.errors.push('Enter your email');
+            }
+
+            if (data.address === '' ){
+               this.errors.push('Enter your address');
+            }
+
+            if (data.postcode === '' ){
+               this.errors.push('Enter your postcode');
+            }
+
+            if (data.city === '' ){
+               this.errors.push('Enter your city');
+            }
+
+            if (data.phone === '') {
+                    this.errors.push('Enter your phone number');
+            }
+            
+            // if the form is valid
+            if (this.errors.length === 0){
+               // fetch chekout api
+               fetch('/api/checkout/', {
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                     'X-CSRFToken': '{{ csrf_token }}'
+                  },
+                  credentials: 'same-origin',
+                  body: JSON.stringify(data)
+               })
+               .then((response) =>{
+                  console.log('Success');
+                  console.log(response);
+
+            }
          },
 
          // fucntion to increase cart quantity
