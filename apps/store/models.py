@@ -2,13 +2,16 @@ from io import BytesIO
 from django.core.files import File
 from PIL import Image
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # category model
 class Category(models.Model):
     title = models.CharField(max_length=255)
+    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(max_length=255)
     ordering = models.IntegerField(default=0)
+    is_featured = models.BooleanField(default=False)
 
     # changes 'Categorys' to Categories in the admin section, orders categories
     class Meta:
@@ -19,17 +22,25 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+    # Function to get the absolute url for categories
+    def get_absolute_url(self):
+        return '/%s/' % (self.slug)
+
 
 # products model
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', related_name='variants', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     description = models.TextField(blank=True, null=True)
     price = models.FloatField()
     featured = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="media/images/", blank=True, null=True)
-    thumbnail = models.ImageField(upload_to="media/images/", blank=True, null=True)
+    num_available = models.IntegerField(default=3)
+    num_visits = models.IntegerField(default=0)
+    last_visit = models.DateTimeField(blank=True, null=True)
+    image = models.ImageField(upload_to="images/", blank=True, null=True)
+    thumbnail = models.ImageField(upload_to="images/", blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
     # orders products by the date they were added
@@ -40,12 +51,24 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        self.thumbnail = self.thumbnails(self.image)
 
-        super().save(*args, **kwargs)
+    # Function to get the absolute url for the products
+    def get_absolute_url(self):
+        return '/%s/%s/' % (self.category.slug, self.slug)
 
-    # create thumbnails
+    def get_thumbnail(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        else:
+            if self.image:
+                self.thumbnail = self.thumbnails(self.image)
+                self.save()
+
+                return self.thumbnail.url
+            else:
+                return ''
+
+    # Function to create thumbnails
     def thumbnails(self, image, size=(300, 200)):
 
         img = Image.open(image)
@@ -55,4 +78,54 @@ class Product(models.Model):
         thumb_io = BytesIO()
         img.save(thumb_io, 'JPEG', quality=85)
         thumbnail = File(thumb_io, name=image.name)
+
         return thumbnail
+
+        # function to get the product ratings
+    def get_rating(self):
+        total = sum(int(review['stars']) for review in self.reviews.values())
+
+        # if there are reviews, they are shown
+        if self.reviews.count() > 0:
+            return total/self.reviews.count()
+        # else the user is informed that there are no reviews
+        else:
+            return 0
+
+
+# fucntion to add multiple product images
+class ProductImages(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='images/', blank=True, null=True)
+
+    # saves product images
+    def save(self, *args, **kwargs):
+        self.thumbnail = self.make_thumbnail(self.image)
+
+        super().save(*args, **kwargs)
+
+    # creates thumbnails for product images
+    def make_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(image)
+        img.convert('RGB')
+        img.thumbnail(size)
+
+        thumb_io = BytesIO()
+        img.save(thumb_io, 'JPEG', quality=85)
+
+        thumbnail = File(thumb_io, name=image.name)
+
+        return thumbnail
+
+
+# Function for product review
+class ProductReview(models.Model):
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
+
+    content = models.TextField(blank=True, null=True)
+    stars = models.IntegerField()
+
+    date_added = models.DateTimeField(auto_now_add=True)
