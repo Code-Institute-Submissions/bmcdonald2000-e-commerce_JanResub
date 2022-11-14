@@ -35,9 +35,47 @@ def search(request):
 # view product page functions
 def view_product(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug)
+    product.num_visits = product.num_visits + 1
+    product.last_visit = datetime.now()
+    product.save()
+
+    # function that allows authenticated users to post product reviews
+    if request.method == 'POST' and request.user.is_authenticated:
+        stars = request.POST.get('stars', 3)
+        content = request.POST.get('content', '')
+
+        review = ProductReview.objects.create(product=product, user=request.user, stars=stars, content=content)
+
+        return redirect('view_product', category_slug=category_slug, slug=slug)
+
+    # displays related products
+    related_products = list(product.category.products.filter(parent=None).exclude(id=product.id))
+
+    if len(related_products) >= 3:
+        related_products = random.sample(related_products, 3)
+
+    # where there is a variant of the product the parent product redirects to the product page
+    if product.parent:
+        return redirect('view_product', category_slug=category_slug, slug=product.parent.slug)
+
+    imagesstring = "{'thumbnail': '%s', 'image': '%s'}," % (product.thumbnail.url, product.image.url)
+
+    # product image is displayed
+    for image in product.images.all():
+        imagesstring = imagesstring + ("{'thumbnail': '%s', 'image': '%s'}," % (image.thumbnail.url, image.image.url))
+
+    cart = Cart(request)
+
+    # if product is in stock then it is added to the cart
+    if cart.has_product(product.id):
+        product.in_cart = True
+    else:
+        product.in_cart = False
 
     context = {
         'product': product,
+        'imagesstring': imagesstring,
+        'related_products': related_products
     }
 
     return render(request, 'view_product.html', context)
