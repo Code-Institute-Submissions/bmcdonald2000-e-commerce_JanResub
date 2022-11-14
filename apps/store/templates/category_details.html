@@ -7,28 +7,36 @@
 <!-- Template content -->
 {% block content %}
 
-   <h1 class="title"> {{ category.title }}</h1>
+    <!-- nav bar for categories page -->
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            {% if category.parent %}
+                <li><a href="{% url 'category_details' category.parent.slug %}">{{ category.parent.title }}</a></li>
+            {% endif %}
+            <li class="is-active"><a href="{% url 'category_details' category.slug %}">{{ category.title }}</a></li>
+        </ul>
+    </nav>
 
-    {% for product in products %}
-        <!-- Bulma card to display product data -->
-        <div class="column is-4">
-            <div class="card">
-                <div class="card-content">
-                    <div class="media">
-                    <div class="media-content">
-                        <!-- displays product title -->
-                        <p class="title is-4">{{ product.title }}</p>
-                        <!-- displays product price -->
-                        <p class="subtitle is-6"> £ {{ product.price}}</p>
-                    </div>
-                    </div>
+    <!-- category title  -->
+    <h1 class="title"> {{ category.title|title }}</h1>
+
+    <!-- sub category -->
+    {% if category.children.all %}
+        <div class="columns is-multiline">
+            {% for subcategory in category.children.all %}
+                <div class="column is-3">
+                    <h2 class="subtitle">{{ subcategory.title }}</h2>
+
+                    <a href="{% url 'category_details' subcategory.slug %}">View products</a>
                 </div>
-                <!-- Bulma footer with link to product description -->
-                <footer class="card-footer">
-                    <a href="{% url 'view_product' category.slug product.slug %}" class="card-footer-item">View</a>
-                </footer>
-            </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+    {% else %}
+        <!-- displays products in a list using the products list template -->
+        {% with products as list_products %}
+            {% include 'parts/product_list.html' %}
+        {% endwith %}
+    {% endif %}
    
 {% endblock %}
