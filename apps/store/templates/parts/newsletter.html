@@ -1,0 +1,66 @@
+<div class="newsletter-wrapper" id="newsletter-wrapper">
+    
+    <!-- Subtitle for the newsletter -->
+    <h2 class="subtitle">Subscribe to the e-store newsletter</h2>
+
+    <!-- newsletter subscription form -->
+    <form v-on:submit.prevent="onSubmit">
+        <div class="field has-addons">
+            <div class="control">
+                <input type="email" v-model="email" name="email" class="input" placeholder="Enter your e-mail">
+            </div>
+            <div class="control">
+                <button class="button is-success">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- user is notified when they have signed up suceesfully -->
+    <div class="notification is-success" v-if="showSuccess">
+        You are now subscribed to the E-store newsletter !
+    </div>
+</div>
+
+<!-- Vue app for the newsletter -->
+<script>
+    var newsletterapp = new Vue({
+        el: '#newsletter-wrapper',
+        data () {
+            return {
+                email: '',
+                showSuccess: false
+            }
+        },
+        methods: {
+            onSubmit() {
+                console.log('onSubmit')
+
+                // fetches the API endpoint to add a subscriber
+                fetch('/api/add_subscriber/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({'email': this.email})
+                    })
+                    // the json data is returned
+                    .then((response) => {
+                        return response.json()
+                    })
+                    // if successful the data is then used to update the user email and a success message is dispalyed
+                    .then((data) => {
+                        console.log(data)
+
+                        this.showSuccess = true
+                        this.email = ''
+                    })
+                    // function to cath any errors
+                    .catch(function(error) {
+                        this.showSuccess = false
+                        console.log('Error:', error);
+                    });
+            }
+        }
+    })
+</script>
