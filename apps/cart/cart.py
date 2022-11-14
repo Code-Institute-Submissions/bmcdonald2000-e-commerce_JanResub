@@ -19,7 +19,6 @@ class Cart(object):
     # function to iterate through the products
     def __iter__(self):
         product_ids = self.cart.keys()
-
         clean_product = []
 
         for p in product_ids:
@@ -45,34 +44,37 @@ class Cart(object):
 
         # if a product id, doesnt exist one is created
         if product_id not in self.cart:
-            print('test 1')
             self.cart[product_id] = {'quantity': 0, 'price': price, 'id': product_id}
 
         # quantity of items in the cart is updated
         if update_quantity:
-            print('test 2')
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] = self.cart[product_id]['quantity'] + 1
         # save cart
         self.save()
 
+    # function to track product inventory
+    def has_product(self, product_id):
+        if str(product_id) in self.cart:
+            return True
+        else:
+            return False
+
     # function to delete items from cart
     def delete(self, product_id):
-        print('del')
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
 
     # function to update and save the browser session
     def save(self):
-        print('test 3')
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
 
     # function to clear basket on checkout
     def clear(self):
-        self.session[settings.CART_SESSION_ID]
+        del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
 
     # fucntion to calculate total quantity in the cart
@@ -81,9 +83,4 @@ class Cart(object):
 
     #  function to calculate total cost of the cart
     def total_cost(self):
-        if "total" in self.cart.values():
-            return sum(float(item['total']) for item in self.cart.values())
-        else:
-            return 0
-
-
+        return sum(float(item['total']) for item in self)
