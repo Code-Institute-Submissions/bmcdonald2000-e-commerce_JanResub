@@ -1,30 +1,52 @@
-from django.shortcuts import render
-
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.views.generic import TemplateView
 from .cart import Cart
+import os
+import json
+import stripe
 
 
-# function to add item to cart
-def cart(request):
-    cart_details = Cart(request)
-    productstring = ''
+stripe.api_key = settings.STRIPE_HIDDEN
 
-    for item in cart_details:
+
+# function to view items in cart
+def cart_details(request):
+    cart = Cart(request)
+    productsstring = ''
+
+    for item in cart:
         product = item['product']
+        url = '/%s/%s/' % (product.category.slug, product.slug)
+        x = "{'id': '%s', 'title': '%s', 'price': '%s', 'quantity': '%s', 'total': '%s', 'thumbnail': '%s', 'url': '%s', 'num_available': '%s'}," % (product.id, product.title, product.price, item['quantity'], item['total'], product.get_thumbnail, url, product.num_available)
 
-        x = "{'id': '%s', 'title': '%s', 'price': '%s', 'quantity': '%s', 'total': '%s'}," % (product.id, product.title, product.price, item['quantity'], item['total'])
+        productsstring = productsstring + x
 
-        productstring = productstring + x
+    # autheticated users details are displayed in the form
+    if request.user.is_authenticated:
+        first_name = request.user.first_name
+        last_name = request.user.last_name
+        email = request.user.email
+        address = request.user.userprofile.address
+        postcode = request.user.userprofile.postcode
+        city = request.user.userprofile.city
+        phone = request.user.userprofile.phone
+    # unautheticated users details are not displayed in the form
+    else:
+        first_name = last_name = email = address = postcode = city = phone = ''
 
     context = {
-        'cart_details': cart_details,
-        'productstring': productstring
+        'cart': cart,
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
+        'address': address,
+        'postcode': postcode,
+        'city': city,
+        'phone': phone,
+        'public': settings.STRIPE_API_KEY,
+        'productsstring': productsstring.rstrip(',')
     }
-
+    # data is retruned in the cart template page
     return render(request, 'cart.html', context)
-
-# function for successful orders
-def success(request):
-    cart = Cart(request)
-    cart.clear()
-    
-    return render(request, 'success.html')
