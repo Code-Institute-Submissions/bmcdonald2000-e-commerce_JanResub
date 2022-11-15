@@ -1,0 +1,10 @@
+/* makes the helper text small and grey so less distracting for the user */
+form .helptext {
+    font-size: 15px;
+    color: #ccc;
+}
+
+/* removed standard django messages (except errors) from form  */
+form ul:not(.errorlist) {
+    display: none;
+}
