@@ -63,8 +63,8 @@ def checkout_session(request):
             payment_method_types=['card'],
             line_items=items,
             mode='payment',
-            success_url='https://8000-bmcdonald2000-ecommerce-vwm03kplm3y.ws-eu74.gitpod.io/cart/success/',
-            cancel_url='https://8000-bmcdonald2000-ecommerce-vwm03kplm3y.ws-eu74.gitpod.io/cart/'
+            success_url='https://tranquil-temple-81228.herokuapp.com/cart/success/',
+            cancel_url='https://tranquil-temple-81228.herokuapp.com/cart/cancel'
     )
 
     # creates an order

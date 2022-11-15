@@ -58,7 +58,7 @@
                     <tr class="item">
                         <td>
                             {% if item.product.thumbnail.url %}
-                                <img src="https://bmcdonald2000-ecommerce-vwm03kplm3y.ws-eu74.gitpod.io{{item.product.get_thumbnail}}" width="40">
+                                <img src="https://tranquil-temple-81228.herokuapp.com/{{item.product.get_thumbnail}}" width="40">
                             {% endif %}
                         </td>
                         <td>{{ item.product.title }}</td>
