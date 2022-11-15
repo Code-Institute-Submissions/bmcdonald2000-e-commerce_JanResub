@@ -25,3 +25,8 @@ form ul:not(.errorlist) {
 .newsletter-wrapper .field.has-addons {
     justify-content: center;
 }
+
+/* styles the notifications */
+.notification.space-below {
+    margin-bottom: 20px;
+}
