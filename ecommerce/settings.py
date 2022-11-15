@@ -9,9 +9,31 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-# Publishable
-STRIPE_API_KEY = 'pk_test_51LRB4lFDnPzYelt5FXwvVzzvGSk0DTo96kfvPZQ81bCsVoA24ybBV5E1X4E2Bvv5IcxcFsrh93Zq6eQnfEJQDPsA00BgMpVLke'
-STRIPE_HIDDEN = 'sk_test_51LRB4lFDnPzYelt5YVPGv6flnAhfv5dioglSLdAGNnfgH8d3O5PmI3XpY2Qds5HKyz0N6w6h2JWl1WfIH2Dbp2nV00DuKmYtUo'
+
+from decouple import config
+import os
+
+# Stripe keys
+STRIPE_API_KEY = config('STRIPE_API_KEY')
+STRIPE_HIDDEN = config('STRIPE_HIDDEN')
+STRIPE_SIGNING_SECRET = config('STRIPE_SIGNING_SECRET')
+
+# email config for development
+if 'DEVELOPMENT' in os.environ:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEFAULT_FROM_EMAIL = 'estoreorders83@gmail.com'
+
+# email config for production
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = 587
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
+    DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+
+
 
 import os
 from pathlib import Path
@@ -24,7 +46,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t*_wdoy2qpoa)3jgmx5*_e)b6-%)4=n63udl^*s*a5pnagr9$!'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,10 +54,24 @@ DEBUG = True
 # 3rd party package is handling hosting
 ALLOWED_HOSTS = []
 
+# secure config for the google SMTP server
+# EMAIL_BACKEND = config('EMAIL_BACKEND')
+# EMAIL_HOST = config('EMAIL_HOST')
+# EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+# EMAIL_PORT = config('EMAIL_PORT')
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+
+# django login/logout
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'cart'
+LOGOUT_REDIRECT_URL = 'home'
+
 # Items removed from cart after 12 hours
 SESSION_COOKIE_AGE = 43200
 # cart session ID
-CART_SESSION_ID = 'cart'
+CART_SESSION_ID = 'cart session'
 
 
 # Application definition
@@ -46,12 +82,17 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sitemaps',
     'django.contrib.staticfiles',
 
-    'apps.core',
     'apps.cart',
+    'apps.coupon',
+    'apps.core',
+    'apps.newsletter',
+    'apps.order',
     'apps.store',
-    'apps.order'
+    'apps.userprofile'
+    
 ]
 
 MIDDLEWARE = [
@@ -136,7 +177,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static/')
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
