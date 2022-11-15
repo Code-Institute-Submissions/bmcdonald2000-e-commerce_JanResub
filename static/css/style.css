@@ -30,3 +30,9 @@ form ul:not(.errorlist) {
 .notification.space-below {
     margin-bottom: 20px;
 }
+
+/* set card heights to 30%*/
+.card .card-image,
+.card .card-image .image{
+    height: 60%
+}
