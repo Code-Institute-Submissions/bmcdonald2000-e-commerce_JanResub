@@ -8,3 +8,20 @@ form .helptext {
 form ul:not(.errorlist) {
     display: none;
 }
+
+/* centres and styles the newsletter wrapper */
+.newsletter-wrapper {
+    padding: 50px 20px;
+    text-align: center;
+    background: #f1f1f1;
+}
+
+/* styles the notifications with the newsletter */
+.newsletter-wrapper .notification {
+    margin-top: 20px;
+}
+
+/* centres the newsletter fields */
+.newsletter-wrapper .field.has-addons {
+    justify-content: center;
+}
