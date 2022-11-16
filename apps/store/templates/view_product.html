@@ -102,6 +102,8 @@
 
                                     <td>
                                         {{ variant.title }}
+                                        <br>     
+                                        £{{ variant.price}} 
                                     </td>
 
                                     <td>
@@ -178,7 +180,8 @@
                 </div>
             {% endfor %}
         </div>
-
+        <!-- line break so there is space between reviews and the review form -->
+        <br>
         <!-- when a user is authenticated they can select the number of stars for a review -->
         <div class="notification space-below">
             {% if request.user.is_authenticated %}
