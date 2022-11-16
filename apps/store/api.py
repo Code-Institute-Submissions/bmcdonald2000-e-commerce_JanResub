@@ -94,6 +94,7 @@ def checkout_session(request):
     order.payment_intent = payment_intent
     order.amount_paid = total
     order.used_coupon = coupon_code
+    order.paid = True
     order.save()
 
     for item in order.items.all():
