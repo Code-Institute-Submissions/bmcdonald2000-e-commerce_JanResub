@@ -92,9 +92,14 @@ def checkout_session(request):
 
     order = Order.objects.get(pk=orderid)
     order.payment_intent = payment_intent
-    order.paid_amount = total
+    order.amount_paid = total
     order.used_coupon = coupon_code
     order.save()
+
+    for item in order.items.all():
+        product = item.product
+        product.num_available = product.num_available - item.quantity
+        product.save()
 
     return JsonResponse({'session': session})
 
