@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from decouple import config
 import os
+import cloudinary
+import cloudinary_storage
 import dj_database_url
 from pathlib import Path
 
@@ -92,7 +94,9 @@ INSTALLED_APPS = [
     'apps.newsletter',
     'apps.order',
     'apps.store',
-    'apps.userprofile'
+    'apps.userprofile',
+    'cloudinary',
+    'cloudinary_storage'
     
 ]
 
@@ -100,6 +104,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
