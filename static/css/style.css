@@ -31,8 +31,8 @@ form ul:not(.errorlist) {
     margin-bottom: 20px;
 }
 
-/* set card heights to 30%*/
+/* set card image heights to 40%*/
 .card .card-image,
 .card .card-image .image{
-    height: 60%
+    height: 30%
 }
