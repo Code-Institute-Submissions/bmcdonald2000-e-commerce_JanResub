@@ -97,7 +97,7 @@ INSTALLED_APPS = [
     'apps.userprofile',
     'cloudinary',
     'cloudinary_storage'
-    
+
 ]
 
 MIDDLEWARE = [
@@ -201,4 +201,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # django-heroku updates variables in my local namespace
 import django_heroku
-django_heroku.settings(locals())
+django_heroku.settings(locals(), staticfiles=False)
