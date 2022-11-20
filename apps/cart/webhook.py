@@ -55,5 +55,3 @@ def webhook(request):
         return HttpResponse(status=500)
 
     return HttpResponse(status=200)
-
-
