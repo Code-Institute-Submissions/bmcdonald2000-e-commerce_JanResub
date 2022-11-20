@@ -1,0 +1,1 @@
+E-Store confirmation for order number {{ order.id }}
