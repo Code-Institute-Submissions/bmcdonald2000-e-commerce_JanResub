@@ -12,26 +12,27 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from decouple import config
 import os
+import dj_database_url
 
 # Stripe keys
 STRIPE_API_KEY = config('STRIPE_API_KEY')
 STRIPE_HIDDEN = config('STRIPE_HIDDEN')
-STRIPE_SIGNING_SECRET = config('STRIPE_SIGNING_SECRET')
+STRIPE_WH_SECRET = config('STRIPE_WH_SECRET')
 
-# email config for development
-if 'DEVELOPMENT' in os.environ:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'estoreorders83@gmail.com'
+# send grid api key
+SENDGRID_API_KEY = config('SG_API_KEY')
 
-# email config for production
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_USE_TLS = True
-    EMAIL_PORT = 587
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
-    DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+# sconfig for sendgrid debug
+SENDGRID_SANDBOX_MODE_IN_DEBUG=False
+
+# email config
+EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('EMAIL')
 
 
 
@@ -54,14 +55,6 @@ DEBUG = True
 # 3rd party package is handling hosting
 ALLOWED_HOSTS = []
 
-# secure config for the google SMTP server
-# EMAIL_BACKEND = config('EMAIL_BACKEND')
-# EMAIL_HOST = config('EMAIL_HOST')
-# EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-# EMAIL_PORT = config('EMAIL_PORT')
-# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-# DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
 
 # django login/logout
 LOGIN_URL = 'login'
@@ -130,15 +123,17 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if not DEBUG:
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
-}
-
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
