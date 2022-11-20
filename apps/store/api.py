@@ -1,6 +1,6 @@
 import json
 import stripe
-from .models import Product
+from apps.store.models import Product
 from django.core.mail import EmailMultiAlternatives
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
@@ -9,10 +9,10 @@ from apps.order.views import render_to_pdf
 from django. conf import settings
 
 from apps.cart.cart import Cart
+from apps.cart.webhook import webhook
 from apps.order.utils import checkout
 from apps.order.models import Order
 from apps.coupon.models import Coupon
-from .utilities import decrement_product_quantity, send_order_confirmation
 
 
 # api function to create a checkout session
@@ -63,7 +63,7 @@ def checkout_session(request):
             payment_method_types=['card'],
             line_items=items,
             mode='payment',
-            success_url='https://tranquil-temple-81228.herokuapp.com/cart/success/',
+            success_url='https://8000-bmcdonald2000-ecommerce-vwm03kplm3y.ws-eu74.gitpod.io/cart/success/',
             cancel_url='https://tranquil-temple-81228.herokuapp.com/cart/cancel'
     )
 
@@ -75,7 +75,9 @@ def checkout_session(request):
     postcode = data['postcode']
     city = data['city']
     phone = data['phone']
+
     payment_intent = session.payment_intent
+
 
     orderid = checkout(request, data['first_name'], data['last_name'], data['email'], data['address'], data['postcode'], data['city'], data['phone'])
 
@@ -97,43 +99,10 @@ def checkout_session(request):
     order.paid = True
     order.save()
 
-    for item in order.items.all():
-        product = item.product
-        product.num_available = product.num_available - item.quantity
-        product.save()
-
     return JsonResponse({'session': session})
 
 
-# checkout api function
-def Checkout(request):
-    cart = Cart(request)
 
-    data = json.loads(request.body)
-    jsonresponse = {'success': True}
-    first_name = data['first_name']
-    last_name = data['last_name']
-    email = data['email']
-    address = data['address']
-    postcode = data['postcode']
-    city = data['city']
-
-    orderid = checkout(request, first_name, last_name, email, address, postcode, city)
-
-    paid = True
-
-    if paid == True:
-        order = Order.objects.get(pk=orderid)
-        order.paid = True
-        order.amount_paid = cart.total_cost()
-        order.save()
-
-        decrement_product_quantity(order)
-        send_order_confirmation(order)
-
-        cart.clear()
-
-    return JsonResponse(jsonresponse)
 
 
 #  add items api function
