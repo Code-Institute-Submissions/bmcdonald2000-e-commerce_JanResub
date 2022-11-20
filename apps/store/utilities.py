@@ -1,8 +1,16 @@
+import os
 from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
 from apps.order.views import render_to_pdf
 from django.http import HttpResponse
+from django.conf import settings
+from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
+from apps.order.models import Order, Item
 
+import json
+import time
+
+@csrf_exempt
 
 # fucntion to decrease product quantity after it has been purchased
 def decrement_product_quantity(order):
@@ -11,22 +19,49 @@ def decrement_product_quantity(order):
         product.num_available = product.num_available - item.quantity
         product.save()
 
-
 # fucntion to send order confirmation
-def send_order_confirmation(self, order):
-    subject = 'Order confirmation'
-    from_email = 'estoreorders83@gmail.com'
-    to = [order.email]
-    text_content = 'Your order was successful!'
-    html_content = render_to_string('order_confirmation.html', {'order': order})
-
+def send_order_confirmation(order):
+    """Send the user a confirmation email"""
+    recipient_list = [order.email]
+    subject = render_to_string(
+        'confirmation_email/subject.txt',
+        {'order': order})
+    body = render_to_string(
+        'confirmation_email/body.txt',
+        {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+    message = send_mail(
+        subject,
+        body,
+        settings.DEFAULT_FROM_EMAIL,
+        recipient_list,
+        )
+    
     pdf = render_to_pdf('order_pdf.html', {'order': order})
-
-    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
-    msg.attach_alternative(html_content, "text/html")
 
     if pdf:
         name = 'order_%s.pdf' % order.id
-        msg.attach(name, pdf, 'application/pdf')
+        message.attach(name, pdf, 'application/pdf')
 
-    msg.send()
+class StripeWH_Handler:
+
+    def __init__(self, request):
+        self.request = request
+
+    def handle_event(self, event):
+        """
+        Handle a generic/unknown/unexpected webhook event
+        """
+        return HttpResponse(
+            content=f'Unhandled Webhook received: {event["type"]}',
+            status=200)
+
+
+    def handle_payment_intent_payment_failed(self, event):
+        """
+        Handle the payment_intent.payment_failed webhook from Stripe
+        """
+        return HttpResponse(
+            content=f'Webhook received: {event["type"]}',
+            status=200)
+
+
