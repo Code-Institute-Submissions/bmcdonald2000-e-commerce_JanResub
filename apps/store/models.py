@@ -97,25 +97,25 @@ class Product(models.Model):
 class ProductImages(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
 
-    pimage = models.ImageField(upload_to='images/', blank=True, null=True)
-    pthumbnail = models.ImageField(upload_to='images/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='images/', blank=True, null=True)
 
     # saves product images
     def save(self, *args, **kwargs):
-        self.pthumbnail = self.make_thumbnail(self.pimage)
+        self.pthumbnail = self.make_thumbnail(self.image)
 
         super().save(*args, **kwargs)
 
     # creates thumbnails for product images
-    def make_thumbnail(self, pimage, size=(300, 200)):
-        img = Image.open(pimage)
+    def make_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(image)
         img.convert('RGB')
         img.thumbnail(size)
 
         thumb_io = BytesIO()
         img.save(thumb_io, 'JPEG', quality=85)
 
-        thumbnail = File(thumb_io, name=pimage.name)
+        thumbnail = File(thumb_io, name=image.name)
 
         return thumbnail
 
