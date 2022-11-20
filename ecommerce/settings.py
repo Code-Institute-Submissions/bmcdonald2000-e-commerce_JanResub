@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from decouple import config
 import os
 import dj_database_url
+from pathlib import Path
 
 # Stripe keys
 STRIPE_API_KEY = config('STRIPE_API_KEY')
@@ -22,7 +23,7 @@ STRIPE_WH_SECRET = config('STRIPE_WH_SECRET')
 # send grid api key
 SENDGRID_API_KEY = config('SG_API_KEY')
 
-# sconfig for sendgrid debug
+# config for sendgrid debug
 SENDGRID_SANDBOX_MODE_IN_DEBUG=False
 
 # email config
@@ -34,10 +35,17 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('EMAIL')
 
+# CLOUDINARY details are hidden using env
+CLOUDINARY_STORAGE = {
+
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET'),
+    'SECURE': True,
+}
 
 
-import os
-from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -174,8 +182,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/')
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
