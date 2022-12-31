@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
+from django.views.generic.edit import UpdateView, DeleteView
+from .models import Userprofile
+from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from .forms import SignUpForm, UserprofileForm, EditAccountForm, DeleteForm
 
-from .forms import SignUpForm, UserprofileForm
 
 # user signup form
 def signup(request):
@@ -20,14 +25,17 @@ def signup(request):
 
             login(request, user)
 
-            # then signed up the user is redirected to the homepage
-            return redirect('home')
+            # adds a message if the signup is successful using SuccessMessageMixin
+            success_message = "You are now an E-store member !"
 
+            # if user is signedup they are returned to the homepage
+            success_url = reverse_lazy('home')
     else:
         form = SignUpForm()
         userprofileform = UserprofileForm()
 
     return render(request, 'signup.html', {'form': form, 'userprofileform': userprofileform})
+
 
 # the user must be logged in to view their account
 @login_required
