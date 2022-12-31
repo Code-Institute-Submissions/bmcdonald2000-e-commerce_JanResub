@@ -64,7 +64,7 @@ def checkout_session(request):
             line_items=items,
             mode='payment',
             success_url='https://tranquil-temple-81228.herokuapp.com/cart/success/',
-            cancel_url='https://tranquil-temple-81228.herokuapp.com/cart/cancel'
+            cancel_url='https://tranquil-temple-81228.herokuapp.com/cart/cancel/'
     )
 
     # creates an order
@@ -100,9 +100,6 @@ def checkout_session(request):
     order.save()
 
     return JsonResponse({'session': session})
-
-
-
 
 
 #  add items api function
