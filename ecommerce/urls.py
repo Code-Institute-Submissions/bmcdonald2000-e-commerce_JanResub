@@ -59,6 +59,10 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('login/', views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('myaccount/Edit_profile/<int:pk>/', EditAccountView.as_view(),
+         name='profile'),
+    path('myaccount/Delete_phone_number/<int:pk>/', DeleteNumberView.as_view(),
+         name='delete_profile'),
 
     # API paths
     path('api/add_to_cart/', add_to_cart, name='add'),
