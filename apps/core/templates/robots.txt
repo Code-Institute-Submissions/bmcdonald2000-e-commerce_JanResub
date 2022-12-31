@@ -1,0 +1,7 @@
+
+User-agent: *
+Disallow: /signup/
+Disallow: /login/
+Disallow: /cart/
+Disallow: /myaccount/
+sitemap: https://tranquil-temple-81228.herokuapp.com/sitemap.xml/
