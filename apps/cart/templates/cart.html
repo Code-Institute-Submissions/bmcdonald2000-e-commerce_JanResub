@@ -36,9 +36,9 @@
                                  [[ product.title ]]
                               </a>
                            </td>
-                           <td><button @click="decreaseQuantity(product.id, product.quantity, product.price)">-</button> [[ product.quantity ]] <button @click="increaseQuantity(product.id, product.quantity, product.price)">+</button></td>
+                           <td><button @click="decreaseQuantity(product.id, product.quantity, product.price)"><i class="bi bi-dash-circle-fill" style="font-size:15px;color:rgb(255, 0, 0);"></i></button> [[ product.quantity ]] <button @click="increaseQuantity(product.id, product.quantity, product.price)"><i class="bi bi-plus-circle-fill" style="font-size:15px;color:rgb(63, 217, 28);"></i></button></td>
                            <td> £ [[ product.total ]] </td>
-                           <td><button @click="deleteFromCart(product.id)" class="button is-danger">Remove</button></td>
+                           <td><button @click="deleteFromCart(product.id)" class="button is-danger is-rounded">Remove <i class="bi bi-trash3-fill"></i></button></td>
                         </tr>
                      </tbody>
 
@@ -56,7 +56,7 @@
                         <!-- total cost with coupon -->
                         <tr v-if="coupon_value">
                            <td colspan="3">Total cost with coupon:</td>
-                           <td> £ [[ totalCostWithCoupon.toFixed(2)]]</td>
+                           <td> £ [[ totalCostWithCoupon.toFixed(2) ]]</td>
                         </tr>
                      </tfoot>
                   </table>
