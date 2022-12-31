@@ -69,3 +69,32 @@ class EditAccountForm(forms.ModelForm):
                                              'placeholder':
                                              'Enter Your Phone Number'}),
         }
+
+
+# creates an delete number form using  a model
+class DeleteForm(forms.ModelForm):
+
+    # form metadata options
+    class Meta:
+        # using Post model
+        model = Userprofile
+
+        # fields that will be used for the form
+        fields = ('address', 'postcode', 'city',
+                  'phone')
+
+        # basic controls/styling for the form fields
+        widgets = {
+            'address': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder':
+                                            'Enter Your Full Address'}),
+            'postcode': forms.Textarea(attrs={'class': 'form-control',
+                                          'placeholder':
+                                          'Enter your Postcode'}),
+            'city': forms.Textarea(attrs={'class': 'form-control',
+                                             'placeholder':
+                                             'Enter Your City'}),
+            'phone': forms.Textarea(attrs={'class': 'form-control',
+                                             'placeholder':
+                                             'Enter Your Phone Number'}),
+        }
