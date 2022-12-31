@@ -30,7 +30,7 @@ from apps.store.views import view_product, category_details, search
 from apps.store.views import add_product, edit_product, delete_product
 from apps.store.views import ReviewView, EditReviewView, DeleteReviewView
 from apps.userprofile.views import signup, myaccount, EditAccountView
-from apps.userprofile.views import DeleteNumberView
+from apps.userprofile.views import DeleteAccountView
 
 from apps.coupon.api import valid_coupon
 from apps.store.api import add_to_cart, delete_from_cart
@@ -61,7 +61,7 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('myaccount/Edit_profile/<int:pk>/', EditAccountView.as_view(),
          name='profile'),
-    path('myaccount/Delete_phone_number/<int:pk>/', DeleteNumberView.as_view(),
+    path('myaccount/Delete_phone_number/<int:pk>/', DeleteAccountView.as_view(),
          name='delete_profile'),
     path('add_product', add_product.as_view(),
          name='product'),
