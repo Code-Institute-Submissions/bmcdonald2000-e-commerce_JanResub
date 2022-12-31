@@ -173,7 +173,7 @@
                     <div class="toast-container position-static">
                         <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
                             <div class="toast-header">
-                                <strong class="me-auto">{{ reviews.name | title }}</strong> |<small class="text-muted">{{ reviews.date_added|date:"Y-m-d" }} 
+                                <strong class="me-auto">{{ reviews.author.username| title }}</strong> |<small class="text-muted">{{ reviews.date_added|date:"Y-m-d" }} 
                             </div>
                             <div class="toast-body"> 
                             </small> {{ reviews.stars }} <i class="bi bi-star-fill float-end" style="font-size:13px;color:rgb(217, 182, 28);display:inline-block;"></i> <br> {{ reviews.content|safe }}
