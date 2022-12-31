@@ -1,0 +1,70 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+
+<!-- Template title -->
+{% block title%} Delete {% endblock %}
+
+<!-- Template content -->
+{% block content %}
+    <!-- line break -->
+    <br/>
+    {% if user.is_authenticated %}
+        {% if user.id == productreview.author.id%}
+            <!-- line break -->
+            <br><br><br><br>
+            <!-- delete form is displayed as a card -->
+            <div class="card">
+
+                <!-- boostrap black border -->
+                <div class="card border-secondary ">
+                    <!-- boostrap card body -->
+                    <div class="card-body">
+                        <!-- card title -->
+                        <h1 class="card-title" id="heading">
+                            Delete: <strong style="color: #ff3131;">{{ productreview.content|safe}}</strong> 
+                        </h1>
+                        <!-- horizontal line -->
+                        <hr>
+                        <!-- line break -->
+                        <br><br/>
+                        <!-- delete post from -->
+                        <div class="form-group">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <i class="bi bi-exclamation-triangle-fill" style="color: #ff3131;"></i> <strong>YOUR REVIEW WILL BE PERMENANTLY DELETED, THIS CAN'T BE UNDONE !!!</strong> <i class="bi bi-exclamation-triangle-fill" style="color: rgb(255, 49, 49);"></i> <br><br/>
+                                <button class=" button is-info is-rounded is-danger is-hoverable" style="font-size: 20px; margin-left: 10px;"><i class="bi bi-trash-fill"></i> Delete</button>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <br><br><br>
+        {% else %}
+            <!-- The user id is displayed, to make it clear which account they are using for users with multiple accounts -->
+            <h2 id="heading"> You are logged in as {{ user.username|title}}</h2> 
+            <!-- div makes it easier to style icon -->
+            <div class="stop">
+                <!-- boostrap stop icon -->
+                <i class="bi bi-slash-circle-fill"></i>
+            </div>
+            <br><br><br><br>
+            <p id="heading"> Only the author can delete this review, if you are the author please <a href="{% url 'login' %}">login</a> and try again</p>
+        {% endif %}
+    {% else %}
+        <br><br>
+        <!-- User is told why they cant access the edit page -->
+        <h2 id="heading"> You must <a href="{% url 'login' %}">login</a> to delete your review</h2>
+
+        <!-- div makes it easier to style icon -->
+        <div class="stop">
+            <!-- boostrap stop icon -->
+            <i class="bi bi-slash-circle-fill"></i>
+        </div>
+        <br><br>
+        <!-- Sign up link-->
+        <p id="heading"> <strong>If you don't have an account <a href="{% url 'sign_up' %}">sign up</a></strong></p>
+        <!-- line break -->
+        <br><br>
+    {% endif %}
+        <!-- line break -->
+        <br><br><br>
+{% endblock %}
