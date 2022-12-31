@@ -1,0 +1,51 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+
+<!-- Template title -->
+{% block title%} Edit Profile {% endblock %}
+
+<!-- Template content-->
+{% block content %}
+    <!-- Only the user who owns the profile can edit the profile -->
+    {% if user.is_authenticated %}
+        {% if user.id == userprofile.user.id %}
+            <!-- line break -->
+            <br/>
+            <!-- boostrap card -->
+            <div class="card">
+                <!-- boostrap card body -->
+                <div class="card-body">
+                    <!-- users name is displayed to personalise the edit profile page. '|title ' capitalises the first letter of the username -->
+                    <h1 id=" heading" class="card-title"> Edit {{ user.username|title }}'s profile </h1>
+                    <!-- horizontal line -->
+                    <hr>
+                    <!-- line break -->
+                    <br/>
+                    <!-- Edit profile form  -->
+                    <div class="form-group">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button class="btn btn-info" style="background-color: #e5c6a0; border: #e5c6a0; color: #000000;"><i class="bi bi-check-circle-fill"></i> Edit Profile </button>
+                    </div>
+                </div>
+            </div>
+            <!-- line break -->
+            <br/>
+        {% endif %}
+    <!-- user will be prompted to log in or return home -->
+    {% else %} 
+    <!-- Line break -->
+    <br><br><br><br>
+        <p id="heading"><a href="{% url 'login' %}" target="_blank">login</a> to edit your profile or return <a href="{% url 'home' %}" target="_blank">home</a></p>
+        
+            <!-- div makes it easier to style icon -->
+            <div class="stop">
+                <!-- boostrap stop icon -->
+                <i class="bi bi-slash-circle-fill"></i>
+            </div>
+            <!-- Line break -->
+            <br><br><br><br>
+    {% endif %}
+
+{% endblock %}
