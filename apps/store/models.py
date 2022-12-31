@@ -44,14 +44,14 @@ class Product(models.Model):
     parent = models.ForeignKey('self', related_name='variants', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
     price = models.FloatField()
     featured = models.BooleanField(default=False)
     num_available = models.IntegerField(default=3)
     num_visits = models.IntegerField(default=0)
     last_visit = models.DateTimeField(blank=True, null=True)
-    image = models.ImageField(upload_to="images/", blank=True, null=True)
-    thumbnail = models.ImageField(upload_to="images/", blank=True, null=True)
+    image = models.ImageField(upload_to="images/", blank=False, null=False)
+    thumbnail = models.ImageField(upload_to="images/", blank=False, null=False)
     date_added = models.DateTimeField(auto_now_add=True)
 
     # orders products by the date they were added
@@ -61,7 +61,6 @@ class Product(models.Model):
     # Product names are displayed in the admin
     def __str__(self):
         return self.title
-
 
     # Function to get the absolute url for the products
     def get_absolute_url(self):
@@ -108,12 +107,12 @@ class Product(models.Model):
 class ProductImages(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
 
-    image = models.ImageField(upload_to='images/', blank=True, null=True)
-    thumbnail = models.ImageField(upload_to='images/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/', blank=False, null=False)
+    thumbnail = models.ImageField(upload_to='images/', blank=False, null=False)
 
     # saves product images
     def save(self, *args, **kwargs):
-        self.pthumbnail = self.make_thumbnail(self.image)
+        self.thumbnail = self.make_thumbnail(self.image)
 
         super().save(*args, **kwargs)
 
