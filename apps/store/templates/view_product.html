@@ -43,14 +43,14 @@
         <!-- displays product title -->
         <h1 class="title">{{product.title | title }}</h1>
         <!-- displays product price -->
-        <h2 class="subtitle"> £ {{ product.price }}</h2>
+        <h2 class="subtitle"> £ {{ product.price|floatformat:2 }}</h2>
         <!-- product stars -->
-        <h2 class="subtitle"> Stars: {% if product.get_rating == 0 %}<small>This product has no ratings</small>{% else %}{{ product.get_rating|floatformat:1 }}{% endif %}</h2>
+        <h2 class="subtitle"> {% if product.get_rating == 0 %}<small>This product has no ratings</small>{% else %}{{ product.get_rating|floatformat:1 }}{% endif %} <i class="bi bi-star-fill" style="font-size:23px;color:rgb(217, 182, 28);display:inline-block;"></i></h2>
 
         <!-- if the product has a description -->
         {% if product.description %}
             <!-- displays product description -->
-            <p class>{{product.description}}</p>
+            <p class>{{product.description|safe}}</p>
         {% endif %}
 
         <br><br>
@@ -103,7 +103,7 @@
                                     <td>
                                         {{ variant.title }}
                                         <br>     
-                                        £{{ variant.price}} 
+                                        £{{ variant.price|floatformat:2}} 
                                     </td>
 
                                     <td>
@@ -127,7 +127,6 @@
                 </div>
             </div>
         {% else %}
-
             {% if product.in_cart %}
                 <p>This product is already in your cart!</p>
             {% else %}
@@ -160,71 +159,44 @@
         <!-- product reviews section -->
         <h2 class="subtitle">Reviews</h2>
 
+
         <!-- date of the review and number of stars is displayed in the review sectioj -->
         <div class="reviews-wrapper">
-            {% for review in product.reviews.all %}
-                <div class="notification space-below">
-                    <!-- review are posted with date, number of stars and review content -->
-                    <p>
-                        <strong>Date: </strong>{{ review.date_added|date:"Y-m-d" }}
-                        <br>
-                        <strong>Stars: </strong>{{ review.stars }}
-                    </p>
-
-                    {{ review.content }}
-                </div>
-            <!-- If there are no reviews the user is notified -->
-            {% empty %}
-                <div class="notification space-below">
-                    There are currently no reviews for this product
-                </div>
-            {% endfor %}
-        </div>
-        <!-- line break so there is space between reviews and the review form -->
-        <br>
-        <!-- when a user is authenticated they can select the number of stars for a review -->
-        <div class="notification space-below">
-            {% if request.user.is_authenticated %}
-                <form method="POST" action=".">
-                    {% csrf_token %}
-
-                    <div class="field">
-                        <label>Stars</label>
-
-                        <div clas="control">
-                            <div class="select">
-                                <select name="stars">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3" selected>3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+            <!-- The user is prompted to leave a review if there are no reviews -->
+            {% if not product.reviews.all %}
+        
+                No reviews yet, be the first to <a href="{% url 'reviews' product.category.slug product.slug %}">add one</a>
+        
+            {% else %}
+            <!-- When a product has reviews they will all be displayed below the product -->
+                {% for reviews in product.reviews.all %}  
+                    <div class="toast-container position-static">
+                        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <strong class="me-auto">{{ reviews.name | title }}</strong> |<small class="text-muted">{{ reviews.date_added|date:"Y-m-d" }} 
+                            </div>
+                            <div class="toast-body"> 
+                            </small> {{ reviews.stars }} <i class="bi bi-star-fill float-end" style="font-size:13px;color:rgb(217, 182, 28);display:inline-block;"></i> <br> {{ reviews.content|safe }}
                             </div>
                         </div>
+                        <hr>
+                        {% if user.is_authenticated %}
+                            <!-- If the author is viewing their own posst they will be able to edit or delete that post-->
+                            {% if user.id == reviews.author.id %}
+                                <a href="{% url 'edit_review' product.category.slug product.slug reviews.pk%}">Edit</a> |
+                                <a href="{% url 'delete_review' product.category.slug product.slug reviews.pk %}">Delete</a>
+                            {% endif %}
+                        {% endif %}
                     </div>
-
-                    <!-- Textbox for review content -->
-                    <div class="field">
-                        <label>Review content</label>
-
-                        <div class="control">
-                            <textarea class="textarea" name="content" placeholder="please leave your review here"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Button to submit review -->
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-success">Submit</button>
-                        </div>
-                    </div>
-                </form>
-            <!-- if a user is not logged in they will be prompted to login before they can leave a review -->
-            {% else %}
-                <p>Please login to add a review!</p>
+                    <br>
+                {% endfor %}
+                <br><br/>
+                <!-- All authorised users will be able to add there own reviews -->
+                <a href="{% url 'reviews' product.category.slug product.slug %}">Add a review</a>
             {% endif %}
         </div>
+
+
     </div>
 
 {% endblock %}
