@@ -8,7 +8,7 @@
         <form method="POST" action=".">
             {% csrf_token %}
 
-            <!-- unauthorised user is redirected to this page when they try an acess a page that requires authorisation -->
+            <!-- unauthorised user is redirected to this page when they try acess a page that requires authorisation -->
             <input type="hidden" name="next" value="{{ next }}">
 
             <!-- user is notified if there is an error when logging in -->
