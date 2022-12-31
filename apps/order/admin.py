@@ -3,6 +3,7 @@ import datetime
 from django.urls import reverse
 from django.contrib import admin
 from .models import Order, Item
+from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -32,11 +33,25 @@ def admin_shipped(ModelAdmin, request, queryset):
         order.save()
 
         # A confirmation email is sent to the user
-        html = render_to_string('order_shipped.html', {'order': order})
-        send_mail('Order Shipped', 'Your order has been shipped!', 'estoreorders83@gmail.com', [order.email], fail_silently=False, html_message=html)
 
+        """Send the user a confirmation email"""
+        recipient_list = [order.email]
+        subject = render_to_string(
+            'order_shipped/subject.txt',
+            {'order': order})
+        body = render_to_string(
+            'order_shipped/body.txt',
+            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+        message = send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            recipient_list,
+            )
     return
-    admin_shipped.short_description = 'Shipped'
+
+
+admin_shipped.short_description = 'Shipped'
 
 
 # function to display order items in a table
