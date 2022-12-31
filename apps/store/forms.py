@@ -75,6 +75,19 @@ class EditProductForm(forms.ModelForm):
             'num_available': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+
+# creates an edit form using  a model
+class EditReviewForm(forms.ModelForm):
+
+    # form metadata options
+    class Meta:
+        # using review model
+        model = ProductReview
+
+        # fields that will be used for the form
+        fields = ('content', 'stars')
+
+
 # creates a review form using a model
 class ReviewForm(forms.ModelForm):
 
