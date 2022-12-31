@@ -1,0 +1,49 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+
+<!-- Template title -->
+{% block title%} Comment {% endblock %}
+
+<!-- Template content -->
+{% block content %}
+    {% if user.is_authenticated %}
+        <!-- line break -->
+        <br><br><br><br>
+        <!-- page header -->
+        <h1 id="heading">Add Your Review</h1>
+         <!-- line break -->
+        <br/>
+        <div class="form-group">
+            <!-- form data is posted and allows images to be inserted by the user -->
+            <form method="POST" action=".">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{ form.media }}
+                <button class="btn btn-info" style="background-color: #e5c6a0; border: #e5c6a0; color: #000000;"><i class="bi bi-check-circle-fill"></i> Add Comment </button>
+                <!-- line break -->
+                <br><br><br><br>
+        </div>
+        <script>
+            // var name = "{{ user.username }}";
+            // document.getElementById("username").value = name;
+
+            var name = "{{ user.username }}";
+            document.getElementById("username").value = name;
+        </script>
+    {% else %}
+        <br><br>
+        <!-- User is told why they cant leave a comment -->
+        <h2 id="heading"> You must <a href="{% url 'login' %}">login</a> to leave a reveiw</h2>
+
+        <!-- div makes it easier to style icon -->
+        <div class="stop">
+            <!-- boostrap stop icon -->
+            <i class="bi bi-slash-circle-fill"></i>
+        </div>
+        <br><br>
+        <!-- Sign up link-->
+        <p id="heading"> <strong>If you don't have an account <a href="{% url 'signup' %}">sign up</a></strong></p>
+        <!-- line break -->
+        <br><br>
+    {% endif %}
+{% endblock  %}
