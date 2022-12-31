@@ -97,14 +97,13 @@ class ReviewForm(forms.ModelForm):
         model = ProductReview
 
         # fields that will be used for the form
-        fields = ('content', 'stars', 'name')
+        fields = ('content', 'stars', 'author')
 
         # post apprear in date order (recent first)
         ordering = ['-date_added']
 
         # basic controls/styling for the form fields
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control',
+            'author': forms.TextInput(attrs={'class': 'form-control',
                                            'value': '', 'id': 'username'}),
         }
-

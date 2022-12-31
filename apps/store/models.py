@@ -134,7 +134,6 @@ class ProductImages(models.Model):
 class ProductReview(models.Model):
     product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=255)
-    name = models.CharField(max_length=255)
     author = models.ForeignKey(User, max_length=255, on_delete=models.CASCADE)
     content = RichTextField(blank=True, null=True)
     stars = models.TextField(choices=RATING_CHOICES, default='3')
