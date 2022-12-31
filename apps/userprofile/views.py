@@ -41,3 +41,22 @@ def signup(request):
 @login_required
 def myaccount(request):
     return render(request, 'myaccount.html')
+
+
+# displays edit profile page using django UpdateView
+class EditAccountView(SuccessMessageMixin, UpdateView):
+
+    # using UserProfile model
+    model = Userprofile
+
+    # displayed on html template page
+    template_name = 'edit_account.html'
+
+    # using ProfilePageForm
+    form_class = EditAccountForm
+
+    # if form is completly successfully then user is returned to the home page
+    success_url = reverse_lazy('myaccount')
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = " Your account is now up to date !"
