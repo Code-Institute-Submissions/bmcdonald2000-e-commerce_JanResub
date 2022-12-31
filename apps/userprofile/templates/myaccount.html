@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="title">My account</h1>
+    <h1 class="title">{{user.username}}'s account</h1>
 
-    <a href="{% url 'logout' %}" class="button is-danger">Log out</a>
+    <a href="{% url 'logout' %}" class="button is-danger is-rounded">Log out</a>
 
     <hr>
     <!-- Account information is displayed in the users account -->
@@ -15,19 +15,22 @@
     <p><strong>Postcode and City: </strong>{{ request.user.userprofile.postcode }} {{ request.user.userprofile.city }}</p>
     <p><strong>Phone: </strong>{{ request.user.userprofile.phone }}</p>
 
+    <a href="{% url 'profile' user.userprofile.pk %}"class="button is-info is-rounded">Edit {{user.username}}'s details</a>
+    <a href="{% url 'delete_profile' user.userprofile.pk %}"class="button is-danger is-rounded">Delete {{user.username}}'s details</a>
+    
     <hr>
     <!-- The users order details will be displayed in their account -->
-    <h2 class="subtitle">My orders</h2>
+    <h2 class="subtitle">{{ user.username }}'s Orders</h2>
 
-    {% for order in request.user.orders.all %}
-        <article class="message is-light">
+    {% for order in request.user.orders.all reversed %}
+        <article class="message is-info">
             <div class="message-header">
                 <p>{{ order.created_at }}</p>
                 <p><strong>Status: </strong>{{ order.status }}</p>
             </div>
 
             <div class="message-body">
-                <table class="table is-striped is-fullwidth">
+                <table class="table is-striped is-fullwidth is-hoverable">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -41,7 +44,7 @@
                             <tr>
                                 <td>{{ item.product.title |title }}</td>
                                 <td>{{ item.quantity }}</td>
-                                <td>{{ item.price }}</td>
+                                <td>{{ item.price|floatformat:2 }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
