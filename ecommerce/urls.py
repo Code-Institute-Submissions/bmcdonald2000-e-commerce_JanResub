@@ -80,6 +80,9 @@ urlpatterns = [
     # Store Paths
     path('<slug:category_slug>/<slug:slug>/', view_product, name='view_product'),
     path('<slug:slug>/', category_details, name='category_details'),
+    path('<slug:category_slug>/<slug:slug>/add_review/', ReviewView.as_view(), name='reviews'),
+    path('<slug:category_slug>/<slug:slug>/<int:pk>/edit_review/', EditReviewView.as_view(), name='edit_review'),
+    path('<slug:category_slug>/<slug:slug>/<int:pk>/delete_review/', DeleteReviewView.as_view(), name='delete_review'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
