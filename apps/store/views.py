@@ -1,7 +1,14 @@
 import random
 from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import DetailView
+from django.contrib import messages
+from django.urls import reverse_lazy
 from .models import Product, Category, ProductReview
+from .forms import ReviewForm, EditReviewForm
+from .forms import AddProductForm, EditProductForm
 from django.db.models import Q
 from apps.cart.cart import Cart
 
@@ -32,21 +39,65 @@ def search(request):
     return render(request, 'searchbar.html', context)
 
 
+# displays add product page using django UpdateView
+class add_product(SuccessMessageMixin, CreateView):
+
+    # using review model
+    model = Product
+
+    # using review Form
+    form_class = AddProductForm
+
+    # using html template to display comments
+    template_name = 'add_product.html'
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = "A new product has been added !"
+
+
+# displays edit product page using django UpdateView
+class edit_product(SuccessMessageMixin, UpdateView):
+    # using review model
+    model = Product
+
+    # using review Form
+    form_class = EditProductForm
+
+    # using html template to display comments
+    template_name = 'edit_product.html'
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = "A product has been edited !"
+
+
+# displays delete product page using django DeleteView
+class delete_product(SuccessMessageMixin, DeleteView):
+
+    # using Post model
+    model = Product
+
+    # using html template to display edit post page
+    template_name = 'delete_product.html'
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = " A product was deleted from the E-store "
+
+    # function to show success message for delete view
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return super(delete_product, self).delete(request, *args, **kwargs)
+
+    # if post is deleted user is returned to homepage
+    success_url = reverse_lazy('home')
+
+
 # view product page functions
 def view_product(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug)
     product.num_visits = product.num_visits + 1
     product.last_visit = datetime.now()
     product.save()
-
-    # function that allows authenticated users to post product reviews
-    if request.method == 'POST' and request.user.is_authenticated:
-        stars = request.POST.get('stars', 3)
-        content = request.POST.get('content', '')
-
-        review = ProductReview.objects.create(product=product, user=request.user, stars=stars, content=content)
-
-        return redirect('view_product', category_slug=category_slug, slug=slug)
 
     # displays related products
     related_products = list(product.category.products.filter(parent=None).exclude(id=product.id))
