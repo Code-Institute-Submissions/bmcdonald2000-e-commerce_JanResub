@@ -105,5 +105,6 @@ class ReviewForm(forms.ModelForm):
         # basic controls/styling for the form fields
         widgets = {
             'author': forms.TextInput(attrs={'class': 'form-control',
-                                           'value': '', 'id': 'username'}),
+                                             'value': '', 'id': 'username',
+                                             'type': 'hidden'}),
         }
