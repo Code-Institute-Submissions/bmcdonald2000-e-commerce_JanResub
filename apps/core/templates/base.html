@@ -8,15 +8,17 @@
        <meta charset="UTF-8">
        <meta http-equiv="X-UA-Compatible" content="IE=edge">
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <meta name="description" content="This is an ecommerce app designed for people who love shopping">
+       <meta name="description" content="This is an ecommerce app for sporting related goods">
+       <meta name="keywords" content="HTML, CSS, JavaScript, django, python, watch, sports, luxury watch, sporting watch, football, designer watch, designer watches, football, basketball, amarni, mens, womens, mens sports, womens sports">
  
        <!-- E-commerce -->
        <title> {% block title %}{% endblock%} | E-Store</title>
 
        <!-- Boostrap, Bulma and CSS links -->
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-       <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+       <link rel="stylesheet" href="{% static 'css/style.css' %}">
        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
  </head>
  <body>
@@ -26,77 +28,97 @@
         <!-- Site Logo -->
             <div class="navbar-brand">
                 <img src="{{ '/static/images/logo.png' }}" alt="logo" width="100" height="70" class="d-inline-block">
+            </div>
+            <!-- toggle menu -->
+            <a @click="toggleMenu()" role="button" class="navbar-burger" :class="{ 'is-active': menuClass }" aria-label="menu" aria-expanded="false" data-target="options">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+            <!-- hamburger menu for smaller screens -->
+            <div class="navbar-menu" :class="{ 'is-active': menuClass }">
+            <div class="navbar-start">
                 <!-- Home link-->
-                <a class="navbar-item" href="{% url 'home' %}">
-                    <i class="bi bi-house-door-fill d-inline-block align-text-top"></i>
+                <a class="navbar-item is-hoverable" href="{% url 'home' %}">
+                    <i class="bi bi-house-door-fill d-inline-block"></i>
                     Home
                 </a>
-                <!-- toggle menu -->
-                <a @click="toggleMenu()" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-				</a>
-
                 <!-- search bar -->
-                <div id="main-navbar" class="navbar-menu" :class="{ 'is-active': menuClass }">
-                    <div class="navbar-start">
-                        <div class="navbar-item">
-                            <form method="get" action="{% url 'search' %}">
-                                <div class="field has-addons">
-                                    <div class="control">
-                                        <input type="text" class="input" placeholder="Search for an item" name="query">
-                                    </div>
-                                    <div class="control">
-                                        <button class="button is-success">Search</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="navbar-end">
-
-            <!-- Category links-->
-            {% for category in category_menu %}
-                    <!-- main categories are displayed -->
-                    {% if not category.children.all %}
-                        <a  href="{% url 'category_details' category.slug %}" class="navbar-item">{{ category.title|title }}</a>
-                    {% else %}
-                    <!-- dropwdown categories -->
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a href="{% url 'category_details' category.slug %}" class="navbar-link">{{ category.title }}</a>
-                            <div class="navbar-dropdown">
-                                <!-- sub categories are displayed -->
-                                {% for subcategory in category.children.all %}
-                                    <a href="{% url 'category_details' subcategory.slug %}" class="navbar-item">{{ subcategory.title }}</a>
-                                {% endfor %}
+                <div class="navbar-item">
+                    <form method="get" action="{% url 'search' %}">
+                        <div class="field has-addons is-rounded is-hoverable">
+                            <div class="control">
+                                <input type="text" class="input" placeholder="Search for an item" name="query">
+                            </div>
+                            <div class="control">
+                                <button class="button is-success">Search</button>
                             </div>
                         </div>
-                    {% endif %}		
-            {% endfor %}
-            
-            <!-- link to cart -->
-            <div class="navbar-item">
-                <a class="button is-primary is-rounded is-hovered" href="{% url 'cart' %}">
-                    <i class="bi bi-cart4"></i>
-                    <!-- shows number of items in cart -->
-                    Cart ([[ numItems ]])
-                </a>
+                    </form>
+                </div>
             </div>
-            {% if request.user.is_authenticated %}
+            <div class="navbar-end">
+                <!-- Category links-->
+                {% for category in category_menu %}
+                        <!-- main categories are displayed -->
+                        {% if not category.children.all %}
+                            <a  href="{% url 'category_details' category.slug %}" class="navbar-item">{{ category.title|title }}</a>
+                        {% else %}
+                        <!-- dropwdown categories -->
+                            <div id="options"class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link " href="{% url 'category_details' category.slug %}">{{ category.title }}</a>
+                                <div class="navbar-dropdown">
+                                    <!-- sub categories are displayed -->
+                                    {% for subcategory in category.children.all %}
+                                        <a class="navbar-item" href="{% url 'category_details' subcategory.slug %}">{{ subcategory.title }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                {% endfor %}
+                
+                <!-- link to cart -->
                 <div class="navbar-item">
-                    <a href="{% url 'myaccount' %}" class="button is-light">My account</a>
+                    <a class="button is-primary is-rounded" href="{% url 'cart' %}">
+                        <i class="bi bi-cart4" style="padding-right: 3px;"></i>
+                        <!-- shows number of items in cart -->
+                        <strong>Cart ([[ numItems ]])</strong>
+                        
+                    </a>
                 </div>
-            {% else %}
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a href="{% url 'signup' %}" class="button is-primary"><strong>Sign up</strong></a>
-                        <a href="{% url 'login' %}" class="button is-light">Log in</a>
+                {% if request.user.is_authenticated %}
+                    <div class="navbar-item">
+                        <a href="{% url 'myaccount' %}" class="button is-primary is-info is-rounded">{{ user.username }}'s account <i class="bi bi-person" style="font-size: 20px; margin-left: 10px;"></i> </a>
                     </div>
-                </div>
-            {% endif %}
+                {% else %}
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a href="{% url 'signup' %}" class="button is-info is-rounded"><strong>Sign up</strong> <i class="bi bi-person-plus-fill" style="font-size: 20px; margin-left: 10px;"></i></a>
+                            <a href="{% url 'login' %}" class="button is-info is-rounded"><strong>Log in</strong> <i class="bi bi-box-arrow-in-right" style="font-size: 20px; margin-left: 10px;"></i></a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a href="{% url 'product' %}" class="button is-info is-rounded"><strong>Add Product</strong> <i class="bi bi-plus" style="font-size: 20px; margin-left: 10px;"></i></a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
             </div>
        </nav>
+       <!-- Django message container so that every user action has a response -->
+      {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert alert-dismissible fade show alert-{{ message.tags }}" role="alert">
+                {{ message|safe }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+      {% endif %}
 
        <!-- Bulma section class to seperate content -->
        <section class="section">
@@ -115,21 +137,42 @@
         <div class="column is-4">
             <!-- Contact us page link -->
             <a class="navbar-item" href="{% url 'contact' %}">
-                <i class="bi bi-person-lines-fill d-inline-block align-text-top"></i>
+                <i style="margin-right:5px; font-size:23px" class="bi bi-person-lines-fill d-inline-block align-text-top"></i>
                 Contact Us
             </a>
             
             <!-- About us page link -->
             <a class="navbar-item" href="{% url 'about_us' %}">
-                <i class="bi bi-file-person-fill d-inline-block align-text-top"></i>
+                <i style="margin-right:5px; font-size:23px" class="bi bi-file-person-fill d-inline-block align-text-top"></i>
                 About Us
+            </a>
+
+            <!-- Privacy policy page link -->
+            <a class="navbar-item" href="https://www.privacypolicygenerator.info/live.php?token=5AvHm7wSbB3QK4YGLnU0lB0s67ohjBMY" target="_blank" rel="noopener noreferrer">
+                <i style="margin-right:5px; font-size:23px" class="bi bi-file-lock2-fill d-inline-block align-text-top"></i>
+                Privacy Policy
+            </a>
+            <!-- Returns policy page link -->
+            <a class="navbar-item" href="https://www.privacypolicies.com/live/ceb27c1a-8b8e-4593-b114-a90092599fa8" target="_blank" rel="noopener noreferrer">
+                <i style="margin-right:5px; font-size:23px" class="bi bi-wallet2"></i>
+                Refund Policy
+            </a>
+            <!-- Terms and conditions page link -->
+            <a class="navbar-item" href="https://www.termsandconditionsgenerator.com/live.php?token=rfAdVvAWr09FBPQb38uc7e6wQAYx9v2f" target="_blank" rel="noopener noreferrer">
+                <i style="margin-right:5px; font-size:23px" class="bi bi-file-text"></i>
+                Terms and conditions
             </a>
         </div>
     </div>
     <strong>Brieanna McDonald ©2022| E-store, all rights reserved</strong> <div class=icons><a href="https://github.com/bmcdonald2000" target="_blank" rel="noopener noreferrer"><i class='bi bi-github icons'></i></a> <a href="mailto:bmcdonald1406@gmail.com" target="_blank" rel="noopener noreferrer"><i class='bi bi-envelope icons'></i></a> <a href="https://www.linkedin.com/in/brieanna-mcdonald-0263b1212/" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin icons"></i></a> <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram icons"></i></a> <a href="https://twitter.com/?lang=en" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter icons"></i></a></div>
  </footer>
+ <!-- link to Vue.JS script -->
  <script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
+ <!-- link to bootstrap JS -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
  <script>
+
         // vue cart functionality
         var store = new Vuex.Store({
             state:{
