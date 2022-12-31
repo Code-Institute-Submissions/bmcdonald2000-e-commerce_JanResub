@@ -1,0 +1,42 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+
+<!-- Template title -->
+{% block title%} Edit Post {% endblock %}
+
+<!-- Template content -->
+{% block content %}
+<br/>
+    {% if user.is_superuser %}
+        <!-- boostrap card -->
+        <div class="card">
+            <!-- boostrap card body -->
+            <div class="card-body">
+                <!-- page header -->
+                <h1 class="card-title" id="heading">{{ product.title|safe }}</h1>
+                <!-- horizontal line -->
+                <hr>
+                <!-- line break -->
+                <br/>
+                <div class="form-group">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.media }}
+                        {{ form.as_p }}
+                        <button class=" button is-info is-rounded is-danger is-hoverable" style="font-size: 20px; margin-left: 10px;"><i class="bi bi-pencil-fill"></i> Edit</button>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <br><br>
+        <!-- User is told why they cant access the edit page -->
+        <h2 id="heading"> You must <a href="{% url 'login' %}">login</a> as a superuser to edit products </h2>
+
+         <!-- div makes it easier to style icon -->
+         <div class="stop">
+            <!-- boostrap stop icon -->
+            <i class="bi bi-slash-circle-fill"></i>
+        </div>
+        <br><br>            
+    {% endif %}
+{% endblock %}
