@@ -142,3 +142,62 @@ def category_details(request, slug):
     }
 
     return render(request, 'category_details.html', context)
+
+
+# displays reviews using django CreateView
+class ReviewView(SuccessMessageMixin, CreateView):
+
+    # using review model
+    model = ProductReview
+
+    # using review Form
+    form_class = ReviewForm
+
+    # using html template to display comments
+    template_name = 'reviews.html'
+
+    # valid form id used to add username to comment
+    def form_valid(self, form):
+        form.instance.product_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = "Thanks for leaving your review !"
+
+
+# displays edit review page using django UpdateView
+class EditReviewView(SuccessMessageMixin, UpdateView):
+
+    # using Post model
+    model = ProductReview
+
+    # using EditForm
+    form_class = EditReviewForm
+
+    # using html template to display edit post page
+    template_name = 'edit_review.html'
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = " Yay !! your review has been updated "
+
+
+# displays delete review page using django UpdateView
+class DeleteReviewView(SuccessMessageMixin, DeleteView):
+
+    # using Post model
+    model = ProductReview
+
+    # using html template to display edit post page
+    template_name = 'delete_review.html'
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = " Your review was deleted from the E-store "
+
+    # function to show success message for delete view
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return super(DeleteReviewView, self).delete(request, *args, **kwargs)
+
+    # if post is deleted user is returned to homepage
+    success_url = reverse_lazy('home')
