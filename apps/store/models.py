@@ -141,7 +141,7 @@ class ProductReview(models.Model):
 
     # function to return data as string in the django admin
     def __str__(self):
-        return '%s - %s' % (self.product.title, self.name)
+        return '%s - %s' % (self.product.title, self.author)
 
     # redirects user to the product page if the form is successful
     def get_absolute_url(self):
