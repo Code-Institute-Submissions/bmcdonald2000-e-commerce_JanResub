@@ -45,3 +45,32 @@ class AddProductForm(forms.ModelForm):
             'featured': forms.CheckboxInput(),
             'num_available': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+# creates an edit product form using a model
+class EditProductForm(forms.ModelForm):
+
+    # form metadata options
+    class Meta:
+        # using product model
+        model = Product
+
+        # fields that will be used for the form
+        fields = ('category', 'parent', 'title', 'description', 'price', 'image', 'slug', 'featured', 'thumbnail', 'num_available')
+
+        # products apprear in date order (recent first)
+        ordering = ['-date_added']
+
+        # basic controls/styling for the form fields
+        widgets = {
+            'category':  forms.Select(choices=categories_dropdown,
+                                      attrs={'class': 'form-control'}),
+            'parent': forms.Select(choices=parent_dropdown,
+                                   attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'price': forms.TextInput(attrs={'class': 'form-control'}),
+            'slug': forms.TextInput(attrs={'class': 'form-control'}),
+            'featured': forms.CheckboxInput(),
+            'num_available': forms.TextInput(attrs={'class': 'form-control'}),
+        }
