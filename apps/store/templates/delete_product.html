@@ -1,0 +1,54 @@
+<!-- Extends the base template -->
+{% extends 'base.html' %}
+
+<!-- Template title -->
+{% block title%} Delete {{product.title |title }} {% endblock %}
+
+<!-- Template content -->
+{% block content %}
+    <!-- line break -->
+    <br/>
+    <!-- only super users are able to delete a product -->
+    {% if user.is_superuser%}
+        <!-- line break -->
+        <br><br><br><br>
+        <!-- delete form is displayed as a card -->
+        <div class="card">
+
+            <!-- boostrap black border -->
+            <div class="card border-secondary ">
+                <!-- boostrap card body -->
+                <div class="card-body">
+                    <!-- card title -->
+                    <h1 class="card-title" id="heading">
+                        Delete: <strong style="color: #ff3131;">{{ product.title|title }}</strong> 
+                    </h1>
+                    <!-- horizontal line -->
+                    <hr>
+                    <!-- line break -->
+                    <br><br/>
+                    <!-- delete product from -->
+                    <div class="form-group">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <i class="bi bi-exclamation-triangle-fill" style="color: #ff3131;"></i> <strong>THIS PRODUCT WILL BE PERMENANTLY DELETED, THIS CAN'T BE UNDONE !!!</strong> <i class="bi bi-exclamation-triangle-fill" style="color: rgb(255, 49, 49);"></i> <br><br/>
+                            <button class=" button is-info is-rounded is-danger is-hoverable" style="font-size: 20px; margin-left: 10px;"><i class="bi bi-trash-fill"></i> Delete Product</button>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        <br><br><br>
+    {% else %}
+        <br><br>
+        <!-- User is told why they cant access the delete page -->
+        <h2 id="heading"> You must <a href="{% url 'login' %}">login</a> as a superuser to delete products</h2>
+
+        <!-- div makes it easier to style icon -->
+        <div class="stop">
+            <!-- boostrap stop icon -->
+            <i class="bi bi-slash-circle-fill"></i>
+        </div>
+    {% endif %}
+        <!-- line break -->
+        <br><br><br>
+{% endblock %}
