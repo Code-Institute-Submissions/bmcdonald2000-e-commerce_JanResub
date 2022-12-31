@@ -44,9 +44,8 @@ CLOUDINARY_STORAGE = {
     'API_KEY': config('API_KEY'),
     'API_SECRET': config('API_SECRET'),
     'SECURE': True,
+    'CLOUDINARY_URL': config('CLOUDINARY_URL'),
 }
-
-
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -63,12 +62,12 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 # 3rd party package is handling hosting
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # django login/logout
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'cart'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Items removed from cart after 12 hours
@@ -87,6 +86,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
+    'ckeditor',
 
     'apps.cart',
     'apps.coupon',
@@ -96,7 +96,7 @@ INSTALLED_APPS = [
     'apps.store',
     'apps.userprofile',
     'cloudinary',
-    'cloudinary_storage'
+    'cloudinary_storage',
 
 ]
 
@@ -136,17 +136,13 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-if not DEBUG:
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
