@@ -7,17 +7,15 @@ from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from apps.order.models import Order, Item
 
-import json
-import time
 
 @csrf_exempt
-
 # fucntion to decrease product quantity after it has been purchased
 def decrement_product_quantity(order):
     for item in order.items.all():
         product = item.product
         product.num_available = product.num_available - item.quantity
         product.save()
+
 
 # fucntion to send order confirmation
 def send_order_confirmation(order):
@@ -35,12 +33,13 @@ def send_order_confirmation(order):
         settings.DEFAULT_FROM_EMAIL,
         recipient_list,
         )
-    
+
     pdf = render_to_pdf('order_pdf.html', {'order': order})
 
     if pdf:
         name = 'order_%s.pdf' % order.id
         message.attach(name, pdf, 'application/pdf')
+
 
 class StripeWH_Handler:
 
@@ -55,7 +54,6 @@ class StripeWH_Handler:
             content=f'Unhandled Webhook received: {event["type"]}',
             status=200)
 
-
     def handle_payment_intent_payment_failed(self, event):
         """
         Handle the payment_intent.payment_failed webhook from Stripe
@@ -63,5 +61,3 @@ class StripeWH_Handler:
         return HttpResponse(
             content=f'Webhook received: {event["type"]}',
             status=200)
-
-
