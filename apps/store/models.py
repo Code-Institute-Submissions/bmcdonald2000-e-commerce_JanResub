@@ -1,8 +1,19 @@
 from io import BytesIO
+from django.urls import reverse
 from django.core.files import File
 from PIL import Image
 from django.db import models
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
+
+
+RATING_CHOICES = (
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+)
 
 
 # category model
@@ -123,9 +134,18 @@ class ProductImages(models.Model):
 # Function for product review
 class ProductReview(models.Model):
     product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
-
-    content = models.TextField(blank=True, null=True)
-    stars = models.IntegerField()
-
+    slug = models.SlugField(max_length=255)
+    name = models.CharField( max_length=255)
+    author = models.ForeignKey(User, max_length=255, on_delete=models.CASCADE)
+    content = RichTextField(blank=True, null=True)
+    stars = models.TextField(choices=RATING_CHOICES, default='3')
     date_added = models.DateTimeField(auto_now_add=True)
+
+    # function to return data as string in the django admin
+    def __str__(self):
+        return '%s - %s' % (self.product.title, self.name)
+
+    # redirects user to the product page if the form is successful
+    def get_absolute_url(self):
+        return reverse('view_product', args=(self.product.category.slug, self.product.slug, ))
+
