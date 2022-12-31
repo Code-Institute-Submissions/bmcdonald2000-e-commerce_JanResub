@@ -52,6 +52,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('Contact_Us/', contact, name='contact'),
     path('About_Us/', about_us, name='about_us'),
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type="text/plain")),
 
     # user paths
     path('myaccount/', myaccount, name='myaccount'),
