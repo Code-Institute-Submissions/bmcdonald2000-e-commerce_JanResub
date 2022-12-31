@@ -37,13 +37,18 @@ def webhook(request):
         return HttpResponse(status=400)
 
     event_dict = event.to_dict()
+
+    # if the payment succeeds
     if event['type'] == "payment_intent.succeeded":
         payment_intent = event['data']['object']
         order = Order.objects.get(payment_intent=payment_intent.id)
         order.paid = True
 
+        # product inventory is decreased
         decrement_product_quantity(order)
+        # confirmation email is sent
         send_order_confirmation(order)
+        # order is saved
         order.save()
         print("Succeeded: ", payment_intent['id'])
         # Fulfill the customer's purchase
