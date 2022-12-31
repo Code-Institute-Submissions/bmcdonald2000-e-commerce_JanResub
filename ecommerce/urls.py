@@ -63,6 +63,12 @@ urlpatterns = [
          name='profile'),
     path('myaccount/Delete_phone_number/<int:pk>/', DeleteNumberView.as_view(),
          name='delete_profile'),
+    path('add_product', add_product.as_view(),
+         name='product'),
+    path('edit_product/<int:pk>/', edit_product.as_view(),
+         name='edit_product'),
+    path('delete_product/<int:pk>/', delete_product.as_view(),
+         name='delete_product'),
 
     # API paths
     path('api/add_to_cart/', add_to_cart, name='add'),
