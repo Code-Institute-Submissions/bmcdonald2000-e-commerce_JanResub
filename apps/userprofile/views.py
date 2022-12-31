@@ -60,3 +60,28 @@ class EditAccountView(SuccessMessageMixin, UpdateView):
 
     # adds a message if the form is success using SuccessMessageMixin
     success_message = " Your account is now up to date !"
+
+
+# displays delete phone number page using django UpdateView
+class DeleteAccountView(SuccessMessageMixin, DeleteView):
+
+    # using Post model
+    model = Userprofile
+
+    # using ProfilePageForm
+    form_class = DeleteForm
+
+    # using html template to display edit post page
+    template_name = 'delete_profile.html'
+
+    # adds a message if the form is success using SuccessMessageMixin
+    success_message = "Your number has been deleted from the E-store"
+
+    # function to show success message for delete view
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return super(DeleteAccountView, self).delete(request, *args, **kwargs)
+
+    # if post is deleted user is returned to homepage
+    success_url = reverse_lazy('myaccount')
