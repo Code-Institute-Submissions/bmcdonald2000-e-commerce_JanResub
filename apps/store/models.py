@@ -66,6 +66,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         return '/%s/%s/' % (self.category.slug, self.slug)
 
+    # function to get thumbnails
     def get_thumbnail(self):
         if self.thumbnail:
             return self.thumbnail.url
@@ -110,21 +111,28 @@ class ProductImages(models.Model):
     image = models.ImageField(upload_to='images/', blank=False, null=False)
     thumbnail = models.ImageField(upload_to='images/', blank=False, null=False)
 
-    # saves product images
-    def save(self, *args, **kwargs):
-        self.thumbnail = self.make_thumbnail(self.image)
+    # function to get thumbnails
+    def get_thumbnail(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        else:
+            if self.image:
+                self.thumbnail = self.thumbnails(self.image)
+                self.save()
 
-        super().save(*args, **kwargs)
+                return self.thumbnail.url
+            else:
+                return ''
 
-    # creates thumbnails for product images
-    def make_thumbnail(self, image, size=(300, 200)):
+    # Function to create thumbnails
+    def thumbnails(self, image, size=(300, 200)):
+
         img = Image.open(image)
         img.convert('RGB')
         img.thumbnail(size)
 
         thumb_io = BytesIO()
         img.save(thumb_io, 'JPEG', quality=85)
-
         thumbnail = File(thumb_io, name=image.name)
 
         return thumbnail
