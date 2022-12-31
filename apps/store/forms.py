@@ -74,3 +74,24 @@ class EditProductForm(forms.ModelForm):
             'featured': forms.CheckboxInput(),
             'num_available': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+# creates a review form using a model
+class ReviewForm(forms.ModelForm):
+
+    # form metadata options
+    class Meta:
+        # using review model
+        model = ProductReview
+
+        # fields that will be used for the form
+        fields = ('content', 'stars', 'name')
+
+        # post apprear in date order (recent first)
+        ordering = ['-date_added']
+
+        # basic controls/styling for the form fields
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                           'value': '', 'id': 'username'}),
+        }
+
