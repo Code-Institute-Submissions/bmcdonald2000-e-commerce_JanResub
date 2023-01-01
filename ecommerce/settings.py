@@ -62,7 +62,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = False
 
 # 3rd party package is handling hosting
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # django login/logout
