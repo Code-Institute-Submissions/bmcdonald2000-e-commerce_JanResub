@@ -14,7 +14,7 @@ from django.views.decorators.http import require_POST
 # webhook function for stripe checkout
 def webhook(request):
     """Listen for webhooks from Stripe"""
-    # # webhook secret key
+    # webhook secret key
     wh_secret = settings.STRIPE_WH_SECRET
     # stripe api key to load events from stripe api
     stripe.api_key = settings.STRIPE_HIDDEN
