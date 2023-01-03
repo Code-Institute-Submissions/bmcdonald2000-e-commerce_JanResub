@@ -24,7 +24,6 @@ from django.views.generic.base import TemplateView
 from apps.cart.webhook import webhook
 from apps.cart.views import cart_details, success, fail
 from apps.core.views import home, contact, about_us, order_confirmation
-# from apps.newsletter.api import api_add_subscriber
 from apps.order.views import admin_order_pdf
 from apps.store.views import view_product, category_details, search
 from apps.store.views import add_product, edit_product, delete_product
