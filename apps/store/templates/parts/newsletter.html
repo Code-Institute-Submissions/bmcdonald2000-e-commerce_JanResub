@@ -1,66 +1,81 @@
-<div class="newsletter-wrapper" id="newsletter-wrapper">
+<html>
+    <head>
+        <!-- loads the static & media files -->
+        {% load static %}
+        {% load cloudinary %}
     
-    <!-- Subtitle for the newsletter -->
-    <h2 class="subtitle">Subscribe to the e-store newsletter</h2>
+        <!-- meta data -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="This is an ecommerce app for sporting related goods">
+        <meta name="keywords" content="HTML, CSS, JavaScript, django, python, watch, sports, luxury watch, sporting watch, football, designer watch, designer watches, football, basketball, amarni, mens, womens, mens sports, womens sports">
 
-    <!-- newsletter subscription form -->
-    <form v-on:submit.prevent="onSubmit">
-        <div class="field has-addons">
-            <div class="control">
-                <input type="email" v-model="email" name="email" class="input" placeholder="Enter your e-mail">
+        <!-- E-commerce -->
+        <title> {% block title %}{% endblock%} | E-Store</title>
+
+        <!-- Boostrap, Bulma and CSS links -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <!-- Bulma navbar so the user can return home after signing up -->
+       <nav class="navbar is-dark" id="navbarapp">
+        <!-- Site Logo -->
+            <div class="navbar-brand">
+                <img src="{{ '/static/images/logo.png' }}" alt="logo" width="100" height="70" class="d-inline-block">
             </div>
-            <div class="control">
-                <button class="button is-success">Submit</button>
+            <!-- toggle menu -->
+            <a @click="toggleMenu()" role="button" class="navbar-burger" :class="{ 'is-active': menuClass }" aria-label="menu" aria-expanded="false" data-target="options">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+            <!-- hamburger menu for smaller screens -->
+            <div class="navbar-menu" :class="{ 'is-active': menuClass }">
+            <div class="navbar-start">
+                <!-- Home link-->
+                <a class="navbar-item is-hoverable" href="{% url 'home' %}">
+                    <i class="bi bi-house-door-fill d-inline-block"></i>
+                    Home
+                </a>
             </div>
+       </nav>
+       <br>
+        <div class="container">
+            <!-- user is notified if email is added -->
+            <div class="col-12">
+                {% if email %}
+                <div class="text-center alert alert-dismissible fade show alert-success" role="alert">
+                    <p>{{ email }} has been {{ action }} to the mailing list.</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-12">
+                <h1>Subscribe To the E-Store Newsletter</h1>
+            </div>
+            <!-- newsletter sign up form -->
+            {% if form %}
+                <div class="col-12 col-md-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p}}
+                        <br>
+                        <button type="submit" class="button is-success">Subscribe!</button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
-    </form>
-
-    <!-- user is notified when they have signed up suceesfully -->
-    <div class="notification is-success" v-if="showSuccess">
-        You are now subscribed to the E-store newsletter !
-    </div>
-</div>
-
-<!-- Vue app for the newsletter -->
-<script>
-    var newsletterapp = new Vue({
-        el: '#newsletter-wrapper',
-        data () {
-            return {
-                email: '',
-                showSuccess: false
-            }
-        },
-        methods: {
-            onSubmit() {
-                console.log('onSubmit')
-
-                // fetches the API endpoint to add a subscriber
-                fetch('/api/add_subscriber/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify({'email': this.email})
-                    })
-                    // the json data is returned
-                    .then((response) => {
-                        return response.json()
-                    })
-                    // if successful the data is then used to update the user email and a success message is dispalyed
-                    .then((data) => {
-                        console.log(data)
-
-                        this.showSuccess = true
-                        this.email = ''
-                    })
-                    // function to cath any errors
-                    .catch(function(error) {
-                        this.showSuccess = false
-                        console.log('Error:', error);
-                    });
-            }
-        }
-    })
-</script>
+    </body>
+    <!-- link to Vue.JS script -->
+    <script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
+    <!-- link to bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</html>
