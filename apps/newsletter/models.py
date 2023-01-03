@@ -1,5 +1,4 @@
 from django.db import models
-from rest_framework.validators import UniqueValidator
 from ckeditor.fields import RichTextField
 from django.conf import settings
 from sendgrid import SendGridAPIClient
