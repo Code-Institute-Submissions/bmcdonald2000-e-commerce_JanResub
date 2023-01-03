@@ -129,9 +129,19 @@
                 {% endblock %}
             </div>
         </section>
+        <hr>
+        <!-- Bulma section class to seperate content -->
+        <section class="newsletter-wrapper">
+            <!-- Bulma container for the newsletter signup link  -->
+            <div class="container">
+                <h1 class="title is-1"> Subscribe To The E-Store Newsletter </h1>
+                <br>
+                <p> Dont miss out ! subscribers recieve exclusive discounts and updates. </p>
+                   <a href="{% url 'new' %}"class="button is-success">Subscribe</a>
+            </div>
+        </section>
+        <br>
         
-        {% include 'parts/newsletter.html' %}
-
  <footer class="footer">
     <div class="columns">
         <div class="column is-4">
