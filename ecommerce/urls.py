@@ -24,11 +24,12 @@ from django.views.generic.base import TemplateView
 from apps.cart.webhook import webhook
 from apps.cart.views import cart_details, success, fail
 from apps.core.views import home, contact, about_us, order_confirmation
-from apps.newsletter.api import api_add_subscriber
+# from apps.newsletter.api import api_add_subscriber
 from apps.order.views import admin_order_pdf
 from apps.store.views import view_product, category_details, search
 from apps.store.views import add_product, edit_product, delete_product
 from apps.store.views import ReviewView, EditReviewView, DeleteReviewView
+from apps.newsletter.views import new, confirm, delete
 from apps.userprofile.views import signup, myaccount, EditAccountView
 from apps.userprofile.views import DeleteAccountView
 
@@ -69,12 +70,14 @@ urlpatterns = [
          name='edit_product'),
     path('delete_product/<int:pk>/', delete_product.as_view(),
          name='delete_product'),
+    path('confirm/', confirm, name='confirm'),
+    path('new/', new, name='new'),
+    path('delete/', delete, name='delete'),
 
     # API paths
     path('api/add_to_cart/', add_to_cart, name='add'),
     path('api/delete_from_cart/', delete_from_cart, name='delete'),
     path('api/checkout_session/', checkout_session, name='checkout_session'),
-    path('api/add_subscriber/', api_add_subscriber, name='api_add_subscriber'),
     path('api/valid_coupon/', valid_coupon, name='valid_coupon'),
 
     # Store Paths
