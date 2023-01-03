@@ -9,87 +9,102 @@
 
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/watches/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/mens_watches/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/womens_watches/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/sports/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/Football/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/basketball/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://tranquil-temple-81228.herokuapp.com/cart/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://tranquil-temple-81228.herokuapp.com/signup/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://tranquil-temple-81228.herokuapp.com/login/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/basketball/spalding_basketball/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/mens_watches/emporio-armani_AR1451/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/Football/retro_football/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/womens_watches/Samsung_Galaxy_Watch4/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://tranquil-temple-81228.herokuapp.com/Contact_Us/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://tranquil-temple-81228.herokuapp.com/About_Us/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://tranquil-temple-81228.herokuapp.com/Football/Football_Pump/</loc>
-  <lastmod>2022-12-12T21:33:32+00:00</lastmod>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/new/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/Contact_Us/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/About_Us/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/basketball/spalding_basketball/add_review/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/mens_watches/emporio-armani_AR1451/add_review/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/Football/retro_football/add_review/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/womens_watches/Samsung_Galaxy_Watch4/add_review/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://tranquil-temple-81228.herokuapp.com/Football/Football_Pump/add_review/</loc>
+  <lastmod>2023-01-03T21:45:49+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 
