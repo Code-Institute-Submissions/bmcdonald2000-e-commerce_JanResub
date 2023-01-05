@@ -10,12 +10,13 @@
                         <img src="{{ p.get_thumbnail}}" alt="product image">
                     </figure>
                 </div>
-
+                <!-- key product details displayed in card -->
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
                             <p class="title is-4">{{ p.title|title }}</p>
                             <p class="subtitle is-6">£{{ p.price|floatformat:2 }}</p>
+                            <p class="subtitle"><i class="bi bi-star-fill" style="font-size:23px;color:rgb(217, 182, 28);display:inline-block;margin-left: 10px;"></i>{% if p.get_rating == 0 %} 0 {% else %} {{ p.get_rating|floatformat:1 }}{% endif %}</h2>
                         </div>
                     </div>
                 </div>
