@@ -1,3 +1,12 @@
+
+/* imports google font Roboto  */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+
+/* universal selector to apply Roboto to all elements that are not a bulma button or fontawesome Icon */
+*:not(i):not(.fa):not(.button){
+    font-family: 'Roboto', sans-serif;
+}
+
 /* makes the helper text small and grey so less distracting for the user */
 form .helptext {
     font-size: 15px;
