@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 <!-- Template title -->
-{% block title%} Comment {% endblock %}
+{% block title%} Add Product {% endblock %}
 
 <!-- Template content -->
 {% block content %}
@@ -15,11 +15,11 @@
         <br/>
         <div class="form-group">
             <!-- form data is posted and allows images to be inserted by the user -->
-            <form method="POST" action=".">
+            <form method="POST" action="{% url 'product' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 {{ form.media }}
-                <button class=" button is-info is-rounded is-danger is-hoverable" style="font-size: 20px; margin-left: 10px;"><i class="bi bi-check-circle-fill"></i> Add Product </button>
+                <button class=" button is-info is-rounded is-danger is-hoverable" style="font-size: 20px; margin-right: 10px;"><i class="bi bi-check-circle-fill"></i> Add Product </button>
                 <!-- line break -->
                 <br><br><br><br>
         </div>

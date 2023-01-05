@@ -5,7 +5,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.decorators import login_required
 from .models import Product, Category, ProductReview
 from .forms import ReviewForm, EditReviewForm
 from .forms import AddProductForm, EditProductForm
@@ -39,20 +40,35 @@ def search(request):
     return render(request, 'searchbar.html', context)
 
 
-# displays add product page using django UpdateView
-class add_product(SuccessMessageMixin, CreateView):
 
-    # using review model
-    model = Product
+@login_required
+def add_product(request):
+    """ Add a product to the store """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, you are not authorised to do that.')
+        return redirect(reverse('home'))
 
-    # using review Form
-    form_class = AddProductForm
+    if request.method == 'POST':
+        form = AddProductForm(request.POST, request.FILES)
 
-    # using html template to display comments
-    template_name = 'add_product.html'
+        if form.is_valid():
+            product = form.save()
+            # adds a message if the form is successful
+            messages.success(request, 'A new product has been added !')
+            return redirect(reverse('view_product', args=[product.category.slug,product.slug]))
+        else:
+            # adds a message if form is unsuccessful
+            messages.error(request, 'Failed to add product Check the form is valid')
+    else:
+        form = AddProductForm()
 
-    # adds a message if the form is success using SuccessMessageMixin
-    success_message = "A new product has been added !"
+    # using html template to display products
+    template = 'add_product.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
 
 
 # displays edit product page using django UpdateView
@@ -63,7 +79,7 @@ class edit_product(SuccessMessageMixin, UpdateView):
     # using review Form
     form_class = EditProductForm
 
-    # using html template to display comments
+    # using html template to edit products
     template_name = 'edit_product.html'
 
     # adds a message if the form is success using SuccessMessageMixin
@@ -76,7 +92,7 @@ class delete_product(SuccessMessageMixin, DeleteView):
     # using Post model
     model = Product
 
-    # using html template to display edit post page
+    # using html template to delete product
     template_name = 'delete_product.html'
 
     # adds a message if the form is success using SuccessMessageMixin
