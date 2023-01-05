@@ -32,24 +32,7 @@ def admin_shipped(ModelAdmin, request, queryset):
         order.status = Order.SHIPPED
         order.save()
 
-        # A confirmation email is sent to the user
-
-        """Send the user a confirmation email"""
-        recipient_list = [order.email]
-        subject = render_to_string(
-            'order_shipped/subject.txt',
-            {'order': order})
-        body = render_to_string(
-            'order_shipped/body.txt',
-            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
-        message = send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            recipient_list,
-            )
     return
-
 
 admin_shipped.short_description = 'Shipped'
 

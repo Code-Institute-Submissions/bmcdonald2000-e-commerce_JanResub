@@ -1,1 +1,0 @@
-Your order number {{ order.id }} has been shipped !
