@@ -16,7 +16,7 @@ Including another URLconf
 # django imports
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import TemplateView
@@ -28,7 +28,7 @@ from apps.order.views import admin_order_pdf
 from apps.store.views import view_product, category_details, search
 from apps.store.views import add_product, edit_product, delete_product
 from apps.store.views import ReviewView, EditReviewView, DeleteReviewView
-from apps.newsletter.views import new, confirm, delete
+from apps.newsletter.views import new
 from apps.userprofile.views import signup, myaccount, EditAccountView
 from apps.userprofile.views import DeleteAccountView
 
@@ -56,6 +56,7 @@ urlpatterns = [
 
     # user paths
     path('myaccount/', myaccount, name='myaccount'),
+    path('verification/', include('verify_email.urls')),
     path('signup/', signup, name='signup'),
     path('login/', views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
@@ -69,9 +70,8 @@ urlpatterns = [
          name='edit_product'),
     path('delete_product/<int:pk>/', delete_product.as_view(),
          name='delete_product'),
-    path('confirm/', confirm, name='confirm'),
     path('new/', new, name='new'),
-    path('delete/', delete, name='delete'),
+
 
     # API paths
     path('api/add_to_cart/', add_to_cart, name='add'),
@@ -90,4 +90,3 @@ urlpatterns = [
 
 # handler fuction for custom 404 page
 handler404 = "ecommerce.views.page_not_found_view"
-
