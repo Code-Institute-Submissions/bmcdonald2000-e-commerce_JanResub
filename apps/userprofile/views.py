@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView, DeleteView
+from verify_email.email_handler import send_verification_email
 from .models import Userprofile
 from django.urls import reverse_lazy
 from django.contrib.auth import login
@@ -17,6 +18,7 @@ def signup(request):
 
         # if the form is valid then the users details are saved
         if form.is_valid() and userprofileform.is_valid():
+
             user = form.save()
 
             userprofile = userprofileform.save(commit=False)
@@ -30,11 +32,14 @@ def signup(request):
 
             # if user is signedup they are returned to the homepage
             success_url = reverse_lazy('home')
+
+            inactive_user = send_verification_email(request, form)
     else:
         form = SignUpForm()
         userprofileform = UserprofileForm()
 
-    return render(request, 'signup.html', {'form': form, 'userprofileform': userprofileform})
+    return render(request, 'signup.html', {'form': form, 
+                                           'userprofileform': userprofileform})
 
 
 # the user must be logged in to view their account
@@ -55,7 +60,7 @@ class EditAccountView(SuccessMessageMixin, UpdateView):
     # using ProfilePageForm
     form_class = EditAccountForm
 
-    # if form is completly successfully then user is returned to the home page
+    # if form is completly successfully then user is returned to their account page
     success_url = reverse_lazy('myaccount')
 
     # adds a message if the form is success using SuccessMessageMixin
@@ -83,5 +88,5 @@ class DeleteAccountView(SuccessMessageMixin, DeleteView):
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(DeleteAccountView, self).delete(request, *args, **kwargs)
 
-    # if post is deleted user is returned to homepage
+    # if post is deleted user is returned to their account
     success_url = reverse_lazy('myaccount')
