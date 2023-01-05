@@ -28,6 +28,7 @@ SENDGRID_API_KEY = config('SG_API_KEY')
 # config for sendgrid debug
 SENDGRID_SANDBOX_MODE_IN_DEBUG=False
 
+
 # email config
 EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
 EMAIL_USE_TLS = True
@@ -86,6 +87,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'verify_email.apps.VerifyEmailConfig',
     'ckeditor',
 
     'apps.cart',
@@ -130,6 +133,10 @@ TEMPLATES = [
         },
     },
 ]
+
+
+
+SITE_ID = 1
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
