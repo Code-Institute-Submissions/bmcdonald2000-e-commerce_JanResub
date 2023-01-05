@@ -64,7 +64,7 @@ urlpatterns = [
          name='profile'),
     path('myaccount/Delete_phone_number/<int:pk>/', DeleteAccountView.as_view(),
          name='delete_profile'),
-    path('add_product', add_product.as_view(),
+    path('add_product/', add_product,
          name='product'),
     path('edit_product/<int:pk>/', edit_product.as_view(),
          name='edit_product'),
