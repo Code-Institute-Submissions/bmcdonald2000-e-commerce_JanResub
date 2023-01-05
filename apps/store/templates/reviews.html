@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 <!-- Template title -->
-{% block title%} Comment {% endblock %}
+{% block title%} Reviews {% endblock %}
 
 <!-- Template content -->
 {% block content %}
@@ -18,8 +18,8 @@
             <form method="POST" action=".">
                 {% csrf_token %}
                 {{ form.as_p }}
-                {{ form.media }}
-                <button class="btn btn-info" style="background-color: #e5c6a0; border: #e5c6a0; color: #000000;"><i class="bi bi-check-circle-fill"></i> Add Comment </button>
+                {{ form.media|safe }}
+                <button class="button is-rounded is-info is-hovered"><i class="bi bi-check-circle-fill"></i> Add Review </button>
                 <!-- line break -->
                 <br><br><br><br>
         </div>
