@@ -31,7 +31,7 @@ class Newsletter(models.Model):
         return self.subject + " " + self.created_at.strftime("%B %d, %Y")
 
     # function to send newsletter to users
-    def send(self):
+    def send(self, request):
         contents = self.contents
         subscribers = Subscriber.objects.filter(confirmed=True)
         sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
