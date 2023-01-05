@@ -44,7 +44,8 @@ class Cart(object):
 
         # if a product id, doesnt exist one is created
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': price, 'id': product_id}
+            self.cart[product_id] = {'quantity': 0, 'price': price,
+                                     'id': product_id}
 
         # quantity of items in the cart is updated
         if update_quantity:

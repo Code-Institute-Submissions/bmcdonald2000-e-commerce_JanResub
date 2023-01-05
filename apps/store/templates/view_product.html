@@ -23,7 +23,7 @@
         <div class="columns">
             <div class="column is-4">
                 <figure class="image is-4by3">
-                    <img :src="mainImage">
+                    <img :src="mainImage" alt="product image">
                 </figure>
             </div>
         </div>
@@ -34,7 +34,7 @@
             <div class="columns">
                 <div class="column is-2" v-for="image in images">
                 <figure class="image is-128x128">
-                    <img :src="image.thumbnail" @click="changeMainImage(image.image)">
+                    <img :src="image.thumbnail" @click="changeMainImage(image.image)" alt="product image">
                 </figure>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                                 <td>
                                     <figure class="image is-48x48">
                                         {% if product.thumbnail.url %}
-                                            <img src="{{ product.thumbnail.url }}">
+                                            <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
                                         {% endif %}
                                     </figure>
                                 </td>
@@ -95,7 +95,7 @@
                                     <td>
                                         <figure class="image is-48x48">
                                             {% if variant.thumbnail.url %}
-                                                <img src="{{ variant.thumbnail.url }}">
+                                                <img src="{{ variant.thumbnail.url }}" alt="{{variant.title}}">
                                             {% endif %}
                                         </figure>
                                     </td>
