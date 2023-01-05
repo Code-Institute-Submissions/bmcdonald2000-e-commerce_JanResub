@@ -15,7 +15,7 @@
     <p><strong>Postcode and City: </strong>{{ request.user.userprofile.postcode }} {{ request.user.userprofile.city }}</p>
     <p><strong>Phone: </strong>{{ request.user.userprofile.phone }}</p>
 
-    <a href="{% url 'profile' user.userprofile.pk %}"class="button is-warning">Edit {{user.username}}'s details</a>
+    <a href="{% url 'profile' user.userprofile.pk %}"class="button is-warning is-rounded">Edit {{user.username}}'s details</a>
     <a href="{% url 'delete_profile' user.userprofile.pk %}"class="button is-danger is-rounded">Delete {{user.username}}'s details</a>
     
     <hr>
