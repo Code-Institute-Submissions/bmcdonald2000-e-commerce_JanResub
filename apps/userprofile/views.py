@@ -16,7 +16,7 @@ def signup(request):
         form = SignUpForm(request.POST)
         userprofileform = UserprofileForm(request.POST)
 
-        # if the form is valid then the users details are saved
+        # if the form is valid then the users details are saved and a verification link is sent
         if form.is_valid() and userprofileform.is_valid():
 
             user = form.save()
@@ -24,16 +24,11 @@ def signup(request):
             userprofile = userprofileform.save(commit=False)
             userprofile.user = user
             userprofile.save()
-
-            login(request, user)
-
-            # adds a message if the signup is successful using SuccessMessageMixin
-            success_message = "You are now an E-store member !"
-
-            # if user is signedup they are returned to the homepage
-            success_url = reverse_lazy('home')
-
+            
+            messages.success(request,
+                             'Verify your email to complete registration')
             inactive_user = send_verification_email(request, form)
+
     else:
         form = SignUpForm()
         userprofileform = UserprofileForm()
