@@ -152,7 +152,7 @@ All user actions shoud return a response. To ensure this is possible there are s
    ° Messages and Buttons do not conform to the monochrom theme to ensure that they stand out to the user. 
         • I have used red for delete buttons (:point_down:) as red is associated with danger making it an obvious alert for the user, promitng them to stop and think before taking further action. Red is also used for the background of error messages to alert the user that something has gone wrong.
 
-<img src="static/images/delete_button.png" alt="delete button" width="450px" height="250px">
+<img src="static/images/delete_button.png" alt="delete button" width="750px" height="250px">
 
         • I have used green for buttons that are immediate calls to action (an example can be seen below :point_down:) as green has positive connotation thus encourages the user to take these actions.
 
@@ -160,9 +160,11 @@ All user actions shoud return a response. To ensure this is possible there are s
 
         • I have used blue for buttons or messages that provide information as blue is associated with information again further encouraging the desired behaviour from the user as can be seen in the image below. :point_down:
 
-<img src="static/images/info.png" alt="view product button" width="450px" height="250px">
+<img src="static/images/view.png" alt="view product button" width="750px" height="250px">
 
         • I have used yellow for buttons or messages that should be approached with caution as yellow is associated with warning. Hence why this is the button colour for editing product as seen in the image below :point_down:
+
+<img src="static/images/edit.png" alt="Edit button example" width="750px" height="250px">
 
 **• Typography**
 
@@ -554,37 +556,37 @@ There is only a slight differnce in the site users homepage and the Admin Navbar
 
 • All models for the site have been registered in the Admin as seen in the imagee below :point_down:, thus making it easy for the admin to monitor/manage the site data as required by user story [#26](https://github.com/bmcdonald2000/e-commerce/issues/26) 
 
-<img src="static/images/AdminPanel.png" alt="Admin Panel">
+<img src="static/images/AdminPanel.png" alt="Admin Panel" width="550px" height="350px">
 
     ° Product reviews can be easily viewd from the Admin as seen in the image below :point_down: This relates to user story [#27](https://github.com/bmcdonald2000/e-commerce/issues/27).
 
-<img src="static/images/AdminReviews.png" alt="Admin Reviews section">
+<img src="static/images/AdminReviews.png" alt="Admin Reviews section" width="550px" height="350px">
 
     ° The Admin can Send Newsletters directly from the admin as demonstarted in the images below :point_down: This relates to user story [#28](https://github.com/bmcdonald2000/e-commerce/issues/28) and [#14](https://github.com/bmcdonald2000/e-commerce/issues/14)
 
-<img src="static/images/AdminEmailFunction.png" alt="Admin Newsletter Email Function">
+<img src="static/images/AdminEmailFunction.png" alt="Admin Newsletter Email Function" width="550px" height="350px">
 
-<img src="static/images/AdminNewsletterEmail.png" alt="Admin Newsletter Email">
+<img src="static/images/AdminNewsletterEmail.png" alt="Admin Newsletter Email" width="550px" height="350px">
 
 
     ° The Admin can filter through orders and update order status as demonstrated in the image below :point_down: This relates to user stories [#26](https://github.com/bmcdonald2000/e-commerce/issues/26) and [#29](https://github.com/bmcdonald2000/e-commerce/issues/29)
 
-<img src="static/images/OrderStatus.png" alt="Admin Newsletter Email Function">
+<img src="static/images/OrderStatus.png" alt="Admin Newsletter Email Function" width="550px" height="350px">
 
-<img src="static/images/AdminFilter.png" alt="Admin Newsletter Email">
+<img src="static/images/AdminFilter.png" alt="Admin Newsletter Email" width="550px" height="350px">
 
 **Footer**
 • The footer contains social media and policy links as shown below :point_down:
 
-<img src="static/images/footer.png" alt="footer">
+<img src="static/images/footer.png" alt="footer" width="550px" height="350px">
 
-<img src="static/images/privacy.png" alt="privacy policy">
+<img src="static/images/privacy.png" alt="privacy policy" width="550px" height="350px">
 
-<img src="static/images/refunds.png" alt="refund policy">
+<img src="static/images/refunds.png" alt="refund policy" width="550px" height="350px">
 
-<img src="static/images/conditions.png" alt="terms and conditions">
+<img src="static/images/conditions.png" alt="terms and conditions" width="550px" height="350px">
 
-<img src="static/images/ContactUs.png" alt="contact us">
+<img src="static/images/ContactUs.png" alt="contact us" width="550px" height="350px">
 
 **404 page**
 
@@ -603,7 +605,7 @@ There is only a slight differnce in the site users homepage and the Admin Navbar
 
 Google keyword research was used to optimise web pages and content to increase ranking in search engines. Both short-tail & Long-tail keywords are used. The “People also ask” and “Related searches” was also used to identify keywords used.
 
-<img src="static/images/Keywords.png" alt="keywords">
+<img src="static/images/Keywords.png" alt="keywords" width="550px" height="50px">
 
 
 ### Social Media Marketing
@@ -612,7 +614,7 @@ A Facebook business page was created with the intent of generating growth organi
 
 I have included a screenshot of the business page below as it may be removed by Facebook.
 
-<img src="static/images/FB.png" alt="Facebok Business Page">
+<img src="static/images/FB.png" alt="Facebok Business Page" width="550px" height="350px">
 
 ### Email Media Marketing
 
@@ -640,20 +642,35 @@ In Development I used the Django default database SQLite, this is not compatible
 
 #### Programs used
 [AmIResponisve](http://ami.responsivedesign.is/#) - I used amiresposive to generate the resposive image at the start of my Readme.
+
 [Google Dev Tools](https://developer.chrome.com/docs/devtools/)- I used google dev tools to test my site performance across a range of devices.
+
 [Tailor Brands](https://studio.tailorbrands.com/) - I used Tailor brands to create my logo.
+
 [Git](https://git-scm.com/) - I used Git to track the changes to my code. Git was also used for version control.
+
 [Github](https://github.com/) - Github was used to host my project files. I then used Gitpages to deploy the website.
+
 [Vs Code](https://code.visualstudio.com/)- VS Code powers gitpod and was used to build the website.
+
 [Slack](https://slack.com/intl/en-gb/) - I used slack to get feedback on my project.
+
 [Google Fonts](https://fonts.google.com/) - The fonts used are google fonts.
+
 [Figma](https://www.figma.com/) - I used figma to design my mockups.
+
 [Gitpod](https://www.gitpod.io/blog/next-chapter-for-gitpod) - Gitpod is powered by VS Code, storing my code in the cloud. I can then commit that code to my Github repository as Gitpod and Github are connected.
+
 [Privacy Policies](https://www.privacypolicies.com/)- Free Returns and Refund Policy Generator.
+
 [Privacy Policies Generator](https://www.privacypolicygenerator.info/)- Free Privacy Policy Generator.
+
 [Terms and Conditions Generator](https://www.termsandconditionsgenerator.com/)- Free terms and conditions generator.
+
 [Lighthouse testing](https://developers.google.com/web/tools/lighthouse) - I used lighthouse testing to test the performance of my webpage.
+
 [Cloudinary](https://cloudinary.com/) - I used cloudinary store media files uploaded by users.
+
 ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white) 
@@ -699,7 +716,9 @@ As seen in my code above :point_up: options is only used as an Id once however t
 :point_up: The same errors/warning show on all pages, for reason previosuly mentioned. SO I have attached the link to the result for a few pages.
 
 [Cart page](https://validator.w3.org/nu/?doc=https%3A%2F%2Ftranquil-temple-81228.herokuapp.com%2Fcart%2F)
+
 [Login page](https://validator.w3.org/nu/?doc=https%3A%2F%2Ftranquil-temple-81228.herokuapp.com%2Flogin%2F)
+
 [My account](https://validator.w3.org/nu/?doc=https%3A%2F%2Ftranquil-temple-81228.herokuapp.com%2Fmyaccount)
 
 ##### W3C CSS Validator 
@@ -763,17 +782,17 @@ Footer Links 	  |  ![Google Chrome](https://img.shields.io/badge/Google%20Chrome
 
 3. Go to API keys section Preview (or use the searchbar to find it)
 
-<img src="static/images/StripeAPI.png" alt="Stripe API keys" width="750px" height="350px">
+<img src="static/images/StripeAPI.png" alt="Stripe API keys" width="550px" height="350px">
 
 4. Note both the publishable and secret keys
 
 5. In your local environment(.env) and Heroku, create environment variables `STRIPE_PUBLIC_KEY` and `STRIPE_SECRET_KEY` with the publishable and secret key values in your`.env` file. 
 
-<img src="static/images/env.png" alt="Stripe API keys" width="750px" height="350px">
+<img src="static/images/env.png" alt=".env file" width="550px" height="350px">
 
 6. You should refrence these variables in your settings like so 
 
-    <img src="static/images/envSettings.png" alt="Stripe API keys" width="750px" height="350px">
+    <img src="static/images/envSettings.png" alt="Stripe API keys" width="550px" height="350px">
 
 7. Back in the Developers section of your stripe account click on Webhooks (or use the searchbar to find it)
 
@@ -785,7 +804,7 @@ Footer Links 	  |  ![Google Chrome](https://img.shields.io/badge/Google%20Chrome
 
 11. In your local environment(.env) and Heroku, create environment variable `STRIPE_WH_SECRET` with the secret values os.environ.setdefault('STRIPE_WH_SECRET', 'YOUR_VALUE_GOES_HERE')
 
-<img src="static/images/StripeWh.png" alt="Stripe Webhook setup" width="750px" height="350px">
+<img src="static/images/StripeWh.png" alt="Stripe Webhook setup" width="550px" height="350px">
 
 
 12. Test the webhook and note the success/fail attempts for troubleshooting, see events and logs for further testing.
@@ -824,7 +843,7 @@ If you incounter any issues refer to the [stripe docs](https://stripe.com/docs)
 
 15. Your settings should look like this :point_down: and your emails should be working. 
 
-<img src="static/images/SendGrid.png" alt="Sendgrid email setting" width="750px" height="350px">
+<img src="static/images/SendGrid.png" alt="Sendgrid email setting" width="550px" height="350px">
 
 15. For further support refer to the[ SendGrid Docs](https://docs.sendgrid.com/for-developers/sending-email/integrating-with-the-smtp-api)
 
@@ -988,11 +1007,11 @@ Clone this project by following the steps:
 
 Below are some examples of the errors I encountered during this project.
 
-<img src="static/images/Error.png" alt="Empty file error" width="750px" height="350px">
+<img src="static/images/Error.png" alt="Empty file error" width="550px" height="350px">
 
-<img src="static/images/Error2.png" alt="Coloumn doesnt exists error" width="750px" height="350px">
+<img src="static/images/Error2.png" alt="Coloumn doesnt exists error" width="550px" height="350px">
 
-<img src="static/images/Error3.png" alt="Cloudinary error" width="750px" height="350px">
+<img src="static/images/Error3.png" alt="Cloudinary error" width="550px" height="350px">
 
 ## Credits
 
@@ -1003,19 +1022,12 @@ All code was written by Brieanna McDonald (the author)
 I did use the following resources to better understand the django framework, vue.js and sendgrid :point_down:
 
 ![Freecode Camp](https://img.shields.io/badge/freecodecamp-27273D?style=for-the-badge&logo=freecodecamp&logoColor=white)
-
 ![Dev.to](https://img.shields.io/badge/dev.to-0A0A0A?style=for-the-badge&logo=devdotto&logoColor=white) 
-
 ![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white)
-
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
-
 ![Twilio](https://a11ybadges.com/badge?logo=twilio)
-
 ![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)
-
 ![Udemy](https://img.shields.io/badge/Udemy-A435F0?style=for-the-badge&logo=Udemy&logoColor=white)
-
 [Code Institute](https://codeinstitute.net/) course material
 
 ### To write my README
