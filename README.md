@@ -350,12 +350,12 @@ Below I have explained the relevance of each table to the website. The table Nam
 
 The follwoing steps have been taken to ensure the security of the users data as well as the integrity of the business :
 
- **env.py file**
+ **.env file**
     • used to store key variables for accessing secure environments like ElephantSql, cloudinary ect.
         ° This variables ar ealso stored within Heroku's config variables to ensure Gitpod and Heroku can sychronise securely. 
 
 **git ignore**
-    • used to ensure the env.py file is never committed to production.
+    • used to ensure that senstive files like .env are never commited
 
 **Cross Site Request Forgery (CSRF) Tokens**
     • All HTML forms have CSRF tokens applied. This provides protection from malicious attacks when sending data (CSRF attacks)
@@ -753,3 +753,295 @@ The following functions were tested on the following browsers using a pass / fai
 | Navbar/Search |  ![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white) ![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white) ![Safari](https://img.shields.io/badge/Safari-000000?style=for-the-badge&logo=Safari&logoColor=white) ![Opera](https://img.shields.io/badge/Opera-FF1B2D?style=for-the-badge&logo=Opera&logoColor=white) 	|   PASS	|
 | Signup/Login/Logout|  ![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white) ![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white) ![Safari](https://img.shields.io/badge/Safari-000000?style=for-the-badge&logo=Safari&logoColor=white) ![Opera](https://img.shields.io/badge/Opera-FF1B2D?style=for-the-badge&logo=Opera&logoColor=white)	 	|   PASS	|
 Footer Links 	  |  ![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white) ![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white) ![Safari](https://img.shields.io/badge/Safari-000000?style=for-the-badge&logo=Safari&logoColor=white) ![Opera](https://img.shields.io/badge/Opera-FF1B2D?style=for-the-badge&logo=Opera&logoColor=white)	|  PASS 	|                                                                                                          
+
+
+## Stripe
+
+1. Register for an account at stripe.com (if you don't have one already)
+
+2. Go to Developers section once logged in 
+
+3. Go to API keys section Preview (or use the searchbar to find it)
+
+<img src="static/images/StripeAPI.png" alt="Stripe API keys" width="750px" height="350px">
+
+4. Note both the publishable and secret keys
+
+5. In your local environment(.env) and Heroku, create environment variables `STRIPE_PUBLIC_KEY` and `STRIPE_SECRET_KEY` with the publishable and secret key values in your`.env` file. 
+
+<img src="static/images/env.png" alt="Stripe API keys" width="750px" height="350px">
+
+6. You should refrence these variables in your settings like so 
+
+    <img src="static/images/envSettings.png" alt="Stripe API keys" width="750px" height="350px">
+
+7. Back in the Developers section of your stripe account click on Webhooks (or use the searchbar to find it)
+
+8. Create a webhook with the url of your website for example: `https://tranquil-temple-81228.herokuapp.com/webhooks/` 
+
+9. Select the payment_intent.payment_failed and payment_intent.succeeded as events to send
+
+10. Note the key created for this webhook
+
+11. In your local environment(.env) and Heroku, create environment variable `STRIPE_WH_SECRET` with the secret values os.environ.setdefault('STRIPE_WH_SECRET', 'YOUR_VALUE_GOES_HERE')
+
+<img src="static/images/StripeWh.png" alt="Stripe Webhook setup" width="750px" height="350px">
+
+
+12. Test the webhook and note the success/fail attempts for troubleshooting, see events and logs for further testing.
+
+If you incounter any issues refer to the [stripe docs](https://stripe.com/docs)
+
+## Sendgrid Email
+
+1. [Create a Gmail account](https://mail.google.com/) (or use an existing one)
+
+2. Go to accounts settings in your gmail account and then click on `Other Google Account Settings`, Go to accounts and import then click on `other account settings`
+
+3. Under signing into Google, turn on 2-step verification and follow the steps to enable
+
+4. Once verified click on app passwords, select Other as the app and give the password a name, for example Django
+
+5. Click create and a 16 digit password will be generated, copy this 16 digit password
+
+6. In the .env file, create an environment variable called `EMAIL_HOST_PASS` with the 16 digit password
+
+7. In the .env file, create an environment variable called `EMAIL_HOST_USER` with the email address of the gmail account
+
+8. I used SendGrid to send emails so [sign up](https://sendgrid.com/) for an account using your gmail account and complete verification. 
+
+9. Navigate to `SendGrid Settings > API Keys`, and click `Create API Key` will atleast "Mail" permissions.
+
+10. Make note of this API key and store it in your .env file
+
+11. Set the server host in your email client or application to `smtp.sendgrid.net`.
+
+12. Set your `username` to the string `apikey`. (This setting is the exact string "apikey" and not the API key itself)
+
+13. Set your `password` to the `API key` generated in step 9. :point_up:
+
+14. Set the `port` to `587`.
+
+15. Your settings should look like this :point_down: and your emails should be working. 
+
+<img src="static/images/SendGrid.png" alt="Sendgrid email setting" width="750px" height="350px">
+
+15. For further support refer to the[ SendGrid Docs](https://docs.sendgrid.com/for-developers/sending-email/integrating-with-the-smtp-api)
+
+16. The variables in the image above :point_up: will also need to be set on Heroku.
+
+## Deployment 
+
+As previously mentioned this project was developed using a [GitPod](https://www.gitpod.io/blog/next-chapter-for-gitpod)workspace. The code was committed to [Git](https://git-scm.com/) and pushed to [GitHub](https://github.com/) using the terminal. The code was then remotely deployed to Heroku.
+
+### Deploying on Heroku
+To deploy this blog app to [Heroku](https://www.heroku.com/) from its [GitHub repository](https://github.com/bmcdonald2000/ecommerce),the following steps were taken
+
+1. Create the Heroku App:
+
+  • Select `Create new app` in Heroku.
+  • Choose a name for your app and select the location.
+
+2. Attach the Postgres database:
+
+  • In the Resources tab, under add-ons, type in Postgres and select the Heroku Postgres option.
+
+3. Prepare the environment and settings.py file:
+
+  • In the Settings tab, click on Reveal Config Vars and copy the URL next to DATABASE_URL.
+  
+  • In your GitPod workspace, create a .env file in the main directory.
+  
+  • Add the DATABASE_URL value and your chosen SECRET_KEY value to the .env file.
+
+  • Add the SECRET_KEY value to the Config Vars in Heroku.
+  
+  • Update the settings.py file to import the env file and add the SECRETKEY and DATABASE_URL file paths.
+
+  • Update the Config Vars with the Cloudinary URL, adding into the settings.py file also.
+
+  • In settings.py add the following sections:
+
+        ° STATIC_URL
+        ° STATICFILES_DIRS
+        ° MEDIA_URL
+        ° MEDIA_ROOT
+        ° TEMPLATES_DIR
+        ° Update DIRS in TEMPLATES with TEMPLATES_DIR
+        ° Update ALLOWED_HOSTS with ['app_name.herokuapp.com', 'localhost']
+
+4. Set DISABLE_COLLECTSTATIC and Deploy to Heroku:
+
+  • Create two directories for your static files (add a subfile for each file type) and templates (if multiple apps used create a seperate nested template file for each additional app to prevent confusion).
+
+
+  • Create a file named `Procfile` in the main directory and add the following:
+
+    ° `web: gunicorn project-name.wsgi`
+  
+  • In the terminal, log in to Heroku and then enter the following:
+
+    ° `heroku config:set DISABLE_COLLECTSTATIC=1 --app (Heroku App Name)`
+
+  • Go to the `Deploy` tab on Heroku and connect to GitHub, then to the required repository. Click on `Deploy Branch` and wait for the build to load. When the build is complete, the app can be opened through Heroku.
+
+### Migrating Your Database
+
+1. As Heroku Student Pack no longer includes free access to the Postgres add-on I had to use ElephantSQL to migrate my Postgres databases from Heroku.
+
+2. Navigate to [ElephantSQL](ElephantSQL.com) and click `Get a managed database today`
+
+3. Select `Try now for FREE` in the TINY TURTLE database plan
+
+4. Select `Log in with GitHub` and authorize ElephantSQL with your selected GitHub account
+
+5. Log in to ElephantSQL.com to access your dashboard
+
+6. Click `Create New Instance`
+
+7. Set up your plan
+
+8. Select `Select Region`
+
+9. Then click `Review`
+
+10. Check your details are correct and then click `Create instance`
+
+11. Return to the ElephantSQL dashboard and click on the database instance name for this project
+
+
+### Migrating your data
+
+1. Navigate to the Postgres Migration Tool repo on github in a new browser tab
+
+2. Click the Gitpod button to open a new workspace
+
+3. Run the script `python3 reel2reel.py` command in the terminal
+
+4. In a different browser tab, go to your app in Heroku and select the Settings tab
+
+5. Click the `Reveal Config Vars` button
+
+6. Copy the value in the `DATABASE_URL` Config Var. (It will start with postgres://)
+
+7. Return to Gitpod and paste in the `URL` you just copied into the terminal where prompted to provide your `DATABASE_URL` and click enter
+
+8. In your original browser tab, get your `ElephantSQL database URL`. (it will start with postgres://)
+
+9. Return to Gitpod and paste in the `URL` where prompted
+
+10. The data will now be downloaded from Heroku and uploaded to your ElephantSQL database
+
+11. To test that your database has been moved successfully, return to ElephantSQL and select `BROWSER`
+Click the `Table queries` button. If you see any options in the dropdown, your tables have been created
+
+12. Select a table name you recognise, and then click `Execute`, the data from the table you selected should be displayed.
+
+### Connecting ElephantSQL database to Heroku
+
+1. In the Heroku Dashboard for your project, open the Resources tab
+2. In the Resources tab, remove the existing Postgres add-on:
+3. Confirm by typing in the name of your Heroku app when prompted.
+4. Navigate to the Settings tab
+5. Reveal your existing Config Vars. The original DATABASE_URL should have been deleted when the add-on was removed.
+6. Add a new config var called `DATABASE_URL` and paste in the value for your ElephantSQL database, and click Add to save it.
+7. Check the Activity tab to confirm
+
+### Final Deployment
+1. Create a runtime.txt python-3.8.14
+2. Create a Procfile web: gunicorn gymbag.wsgi:application
+3. When development is complete change the debug setting to: DEBUG = False in settings.py
+4. In Heroku settings, delete the config vars for DISABLE_COLLECTSTATIC = 1
+
+### Forking This Project
+
+1. Open [GitHub](https://github.com/bmcdonald2000/e-commerce)
+
+2. Find the 'Fork' button at the top right of the page
+3. Once you click the button the fork will be in your repository
+
+### Cloning This Project / Local Deployment
+Clone this project by following the steps:
+
+1. Open [GitHub](https://github.com/bmcdonald2000/e-commerce)
+
+2. You will be provided with three options to choose from, HTTPS, SSH or GitHub CLI, click the clipboard icon in order to copy the URL
+
+3. Once you click the button the fork will be in your repository
+
+4. Open a new terminal
+
+5. hange the current working directory to the location that you want the cloned directory
+
+6. Type `git clone` and paste the URL copied in step 2
+
+`git clone https://github.com/bmcdonald2000/e-commerce.git`
+
+7. Press 'Enter' and the project is cloned to your workspace
+
+8. Create a .env file in the root folder in your project, and add in the following code with the relevant key value pairs, and ensure you enter the correct key values
+
+
+## Known bugs
+
+• There are currently no known bugs. However I did have some issues during the project, solutions to these issues have been highlighted using "fix:" commits.
+
+Below are some examples of the errors I encountered during this project.
+
+<img src="static/images/Error.png" alt="Empty file error" width="750px" height="350px">
+
+<img src="static/images/Error2.png" alt="Coloumn doesnt exists error" width="750px" height="350px">
+
+<img src="static/images/Error3.png" alt="Cloudinary error" width="750px" height="350px">
+
+## Credits
+
+### Code
+
+All code was written by Brieanna McDonald (the author)
+
+I did use the following resources to better understand the django framework, vue.js and sendgrid :point_down:
+
+![Freecode Camp](https://img.shields.io/badge/freecodecamp-27273D?style=for-the-badge&logo=freecodecamp&logoColor=white)
+
+![Dev.to](https://img.shields.io/badge/dev.to-0A0A0A?style=for-the-badge&logo=devdotto&logoColor=white) 
+
+![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white)
+
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+
+![Twilio](https://a11ybadges.com/badge?logo=twilio)
+
+![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)
+
+![Udemy](https://img.shields.io/badge/Udemy-A435F0?style=for-the-badge&logo=Udemy&logoColor=white)
+
+[Code Institute](https://codeinstitute.net/) course material
+
+### To write my README
+
+• Thanks to Danmadeira for some of the shields used in my README, they are from this [repository](https://github.com/danmadeira/simple-icon-badges).
+
+• Thanks to [sheilds.io](https://shields.io/category/build) of the custom shields used for User Story table.
+
+• Thanks to [dev.to](https://dev.to/envoy_/150-badges-for-github-pnk#skills)for some of the shield used in my README.
+
+• Thanks to [Ileriayo](https://github.com/Ileriayo/markdown-badges) for the badges used
+
+• Code Institute [sample README](https://github.com/Code-Institute-Solutions/SampleREADME)
+
+• [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
+• [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md) to add emojis in my README.
+
+• [Markdown badges](https://github.com/Ileriayo/markdown-badges#social) to add badges to my README.
+
+### Acknowledgements 
+
+• Thanks to everyone on the code institute slack channel who provided feedback, tips and support during this project.
+
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+
+• To everyone else who tested the web app, thank you for your feedback.
+
+• This project is for educational use only and was created for the Code Institute Module.
